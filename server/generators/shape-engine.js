@@ -1,5 +1,7 @@
 const Skeleton = require('./skeleton');
 const MathUtils = require('../utils/math');
+const DragonRenderer = require('./dragon-renderer');
+const WolfRenderer = require('./wolf-renderer');
 
 /**
  * Shape Engine
@@ -8,6 +10,8 @@ const MathUtils = require('../utils/math');
 class ShapeEngine {
   constructor() {
     this.skeletonCache = new Map();
+    this.dragonRenderer = new DragonRenderer();
+    this.wolfRenderer = new WolfRenderer();
   }
 
   /**
@@ -24,21 +28,29 @@ class ShapeEngine {
     const primaryColor = dna.colors?.primary || this.getSpeciesColor(dna.species);
     const secondaryColor = dna.colors?.secondary || this.lightenColor(primaryColor, 0.3);
     
+    // Add colors to DNA if not present
+    if (!dna.colors) {
+      dna.colors = { primary: primaryColor, secondary: secondaryColor };
+    }
+    
     // Determine body type for skeletal system
     const bodyType = this.getBodyType(dna.species);
+    
+    // Use professional renderers for dragon and wolf
+    if (dna.species === 'dragon') {
+      await this.dragonRenderer.renderDragon(ctx, centerX, centerY, size * 0.4, dna);
+      return;
+    } else if (dna.species === 'wolf') {
+      await this.wolfRenderer.renderWolf(ctx, centerX, centerY, size * 0.35, dna);
+      return;
+    }
     
     // Phase 2: Use skeletal system for more advanced creatures
     if (this.usesSkeletalSystem(dna.species)) {
       await this.drawSkeletalCreature(ctx, dna, centerX, centerY, size * 0.4, primaryColor, secondaryColor, bodyType);
     } else {
-      // Fallback to basic shapes
+      // Fallback to basic shapes for other species
       switch (dna.species) {
-        case 'dragon':
-          await this.drawDragonBasic(ctx, centerX, centerY, size * 0.4, primaryColor, secondaryColor);
-          break;
-        case 'wolf':
-          await this.drawWolfBasic(ctx, centerX, centerY, size * 0.35, primaryColor, secondaryColor);
-          break;
         case 'goblin':
           await this.drawGoblinBasic(ctx, centerX, centerY, size * 0.3, primaryColor, secondaryColor);
           break;
