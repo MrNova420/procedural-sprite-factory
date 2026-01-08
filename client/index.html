@@ -15,132 +15,488 @@
             <p class="subtitle">Generate infinite pixel art sprites from pure mathematics</p>
         </header>
 
-        <!-- Main Content -->
-        <div class="main-content">
-            <!-- Input Panel -->
-            <div class="input-panel panel">
-                <h2>Generation Controls</h2>
-                
-                <div class="form-group">
-                    <label for="species">Species</label>
-                    <select id="species" class="input-field">
-                        <option value="dragon">Dragon</option>
-                        <option value="wolf">Wolf</option>
-                        <option value="goblin">Goblin</option>
-                        <option value="robot">Robot</option>
-                        <option value="human">Human</option>
-                    </select>
-                </div>
-
-                <div class="form-group">
-                    <label for="size">Size: <span id="size-value">1.0x</span></label>
-                    <input type="range" id="size" class="slider" min="0.5" max="3.0" step="0.1" value="1.0">
-                </div>
-
-                <div class="form-group">
-                    <label for="style">Art Style</label>
-                    <select id="style" class="input-field">
-                        <option value="pixel">Pixel Art</option>
-                        <option value="dark-fantasy">Dark Fantasy</option>
-                        <option value="cyberpunk">Cyberpunk</option>
-                        <option value="cute">Cute/Chibi</option>
-                    </select>
-                </div>
-
-                <div class="form-group">
-                    <label for="primary-color">Primary Color</label>
-                    <input type="color" id="primary-color" class="color-picker" value="#8B0000">
-                </div>
-
-                <button id="generate-btn" class="btn btn-primary">Generate Sprite</button>
-                <button id="random-btn" class="btn btn-secondary">Random</button>
-                <button id="mutate-btn" class="btn btn-secondary" disabled>Mutate Current</button>
-            </div>
-
-            <!-- DNA Panel -->
-            <div class="dna-panel panel">
-                <h2>DNA Tools</h2>
-                
-                <div class="dna-actions">
-                    <button id="save-dna-btn" class="btn-small" disabled>💾 Save DNA</button>
-                    <button id="load-dna-btn" class="btn-small">📂 Load DNA</button>
-                    <button id="share-dna-btn" class="btn-small" disabled>🔗 Share Link</button>
-                </div>
-
-                <div id="dna-info" class="dna-info hidden">
-                    <h3>Current DNA</h3>
-                    <p><strong>ID:</strong> <span id="dna-id">-</span></p>
-                    <p><strong>Species:</strong> <span id="dna-species">-</span></p>
-                    <p><strong>Variant:</strong> <span id="dna-variant">-</span></p>
-                    <p><strong>Generation:</strong> <span id="dna-generation">-</span></p>
-                    <p><strong>Rarity:</strong> <span id="dna-rarity">-</span></p>
-                    <p><strong>Name:</strong> <span id="dna-name">-</span></p>
-                </div>
-
-                <div class="breeding-section">
-                    <h3>Breeding Lab</h3>
-                    <p class="info-text">Save two sprites, then breed them together</p>
-                    <div id="parents-display" class="parents-display">
-                        <div class="parent-slot" id="parent1-slot">
-                            <span>Parent 1: Empty</span>
-                        </div>
-                        <div class="parent-slot" id="parent2-slot">
-                            <span>Parent 2: Empty</span>
-                        </div>
-                    </div>
-                    <button id="breed-btn" class="btn btn-secondary" disabled>🧬 Breed</button>
-                </div>
-            </div>
-
-            <!-- Preview Panel -->
-            <div class="preview-panel panel">
-                <h2>Live Preview</h2>
-                
-                <div class="canvas-container">
-                    <canvas id="preview-canvas" width="400" height="400"></canvas>
-                    <div id="loading" class="loading hidden">Generating...</div>
-                </div>
-
-                <div class="preview-controls">
-                    <label>Zoom: </label>
-                    <button class="btn-small" data-zoom="1">1x</button>
-                    <button class="btn-small active" data-zoom="2">2x</button>
-                    <button class="btn-small" data-zoom="4">4x</button>
-                    <button class="btn-small" data-zoom="8">8x</button>
-                </div>
-
-                <div id="stats" class="stats hidden">
-                    <p><strong>Size:</strong> <span id="stat-size">-</span></p>
-                    <p><strong>Generation Time:</strong> <span id="stat-time">-</span></p>
-                    <p><strong>Species:</strong> <span id="stat-species">-</span></p>
-                </div>
-            </div>
+        <!-- Tab Navigation -->
+        <div class="tab-navigation">
+            <button class="tab-btn active" data-tab="basic">🎨 Basic Generator</button>
+            <button class="tab-btn" data-tab="text-to-asset">✨ Text to Asset</button>
+            <button class="tab-btn" data-tab="animations">🎬 Animations</button>
+            <button class="tab-btn" data-tab="particles">💫 Particles</button>
+            <button class="tab-btn" data-tab="world">🌍 World</button>
+            <button class="tab-btn" data-tab="items">⚔️ Items</button>
+            <button class="tab-btn" data-tab="ui-elements">🎯 UI Elements</button>
+            <button class="tab-btn" data-tab="batch">📦 Batch</button>
+            <button class="tab-btn" data-tab="gallery">🖼️ Gallery</button>
         </div>
 
-        <!-- Export Panel -->
-        <div class="export-panel panel">
-            <h2>Export Options</h2>
-            <div class="export-buttons">
-                <button id="download-png" class="btn btn-export" disabled>
-                    📥 Download PNG
-                </button>
-                <button id="download-metadata" class="btn btn-export" disabled>
-                    📄 Download Metadata
-                </button>
-                <button id="copy-dna" class="btn btn-export" disabled>
-                    🧬 Copy DNA
-                </button>
+        <!-- Tab Content -->
+        <div class="tab-content">
+            <!-- BASIC GENERATOR TAB -->
+            <div id="basic-tab" class="tab-panel active">
+                <div class="main-content">
+                    <!-- Input Panel -->
+                    <div class="input-panel panel">
+                        <h2>Generation Controls</h2>
+                        
+                        <div class="form-group">
+                            <label for="species">Species</label>
+                            <select id="species" class="input-field">
+                                <option value="dragon">Dragon</option>
+                                <option value="wolf">Wolf</option>
+                                <option value="goblin">Goblin</option>
+                                <option value="robot">Robot</option>
+                                <option value="human">Human</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="size">Size: <span id="size-value">1.0x</span></label>
+                            <input type="range" id="size" class="slider" min="0.5" max="3.0" step="0.1" value="1.0">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="style">Art Style</label>
+                            <select id="style" class="input-field">
+                                <option value="pixel">Pixel Art</option>
+                                <option value="dark-fantasy">Dark Fantasy</option>
+                                <option value="cyberpunk">Cyberpunk</option>
+                                <option value="cute">Cute/Chibi</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="primary-color">Primary Color</label>
+                            <input type="color" id="primary-color" class="color-picker" value="#8B0000">
+                        </div>
+
+                        <button id="generate-btn" class="btn btn-primary">Generate Sprite</button>
+                        <button id="random-btn" class="btn btn-secondary">Random</button>
+                        <button id="mutate-btn" class="btn btn-secondary" disabled>Mutate Current</button>
+                    </div>
+
+                    <!-- DNA Panel -->
+                    <div class="dna-panel panel">
+                        <h2>DNA Tools</h2>
+                        
+                        <div class="dna-actions">
+                            <button id="save-dna-btn" class="btn-small" disabled>💾 Save DNA</button>
+                            <button id="load-dna-btn" class="btn-small">📂 Load DNA</button>
+                            <button id="share-dna-btn" class="btn-small" disabled>🔗 Share Link</button>
+                        </div>
+
+                        <div id="dna-info" class="dna-info hidden">
+                            <h3>Current DNA</h3>
+                            <p><strong>ID:</strong> <span id="dna-id">-</span></p>
+                            <p><strong>Species:</strong> <span id="dna-species">-</span></p>
+                            <p><strong>Variant:</strong> <span id="dna-variant">-</span></p>
+                            <p><strong>Generation:</strong> <span id="dna-generation">-</span></p>
+                            <p><strong>Rarity:</strong> <span id="dna-rarity">-</span></p>
+                            <p><strong>Name:</strong> <span id="dna-name">-</span></p>
+                        </div>
+
+                        <div class="breeding-section">
+                            <h3>Breeding Lab</h3>
+                            <p class="info-text">Save two sprites, then breed them together</p>
+                            <div id="parents-display" class="parents-display">
+                                <div class="parent-slot" id="parent1-slot">
+                                    <span>Parent 1: Empty</span>
+                                </div>
+                                <div class="parent-slot" id="parent2-slot">
+                                    <span>Parent 2: Empty</span>
+                                </div>
+                            </div>
+                            <button id="breed-btn" class="btn btn-secondary" disabled>🧬 Breed</button>
+                        </div>
+                    </div>
+
+                    <!-- Preview Panel -->
+                    <div class="preview-panel panel">
+                        <h2>Live Preview</h2>
+                        
+                        <div class="canvas-container">
+                            <canvas id="preview-canvas" width="400" height="400"></canvas>
+                            <div id="loading" class="loading hidden">Generating...</div>
+                        </div>
+
+                        <div class="preview-controls">
+                            <label>Zoom: </label>
+                            <button class="btn-small" data-zoom="1">1x</button>
+                            <button class="btn-small active" data-zoom="2">2x</button>
+                            <button class="btn-small" data-zoom="4">4x</button>
+                            <button class="btn-small" data-zoom="8">8x</button>
+                        </div>
+
+                        <div id="stats" class="stats hidden">
+                            <p><strong>Size:</strong> <span id="stat-size">-</span></p>
+                            <p><strong>Generation Time:</strong> <span id="stat-time">-</span></p>
+                            <p><strong>Species:</strong> <span id="stat-species">-</span></p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Export Panel -->
+                <div class="export-panel panel">
+                    <h2>Export Options</h2>
+                    <div class="export-buttons">
+                        <button id="download-png" class="btn btn-export" disabled>
+                            📥 Download PNG
+                        </button>
+                        <button id="download-metadata" class="btn btn-export" disabled>
+                            📄 Download Metadata
+                        </button>
+                        <button id="copy-dna" class="btn btn-export" disabled>
+                            🧬 Copy DNA
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TEXT TO ASSET TAB -->
+            <div id="text-to-asset-tab" class="tab-panel">
+                <div class="text-to-asset-container">
+                    <div class="panel">
+                        <h2>✨ Text to Asset Generator</h2>
+                        <p class="info-text">Describe what you want and watch it materialize</p>
+                        
+                        <div class="form-group">
+                            <label for="text-prompt">Describe Your Asset</label>
+                            <textarea id="text-prompt" class="text-area" rows="4" 
+                                placeholder="A fierce red dragon with glowing eyes...&#10;A cute blue robot with antenna...&#10;A menacing dark wolf with yellow eyes..."></textarea>
+                        </div>
+
+                        <button id="generate-from-text-btn" class="btn btn-primary btn-large">
+                            ✨ Generate from Description
+                        </button>
+                        
+                        <button id="generate-variations-btn" class="btn btn-secondary btn-large" style="margin-top: 10px;">
+                            🎲 Generate 5 Variations
+                        </button>
+
+                        <div class="examples-section">
+                            <h3>Example Prompts</h3>
+                            <div class="example-buttons">
+                                <button class="btn-example" data-prompt="fierce red dragon with golden eyes and large wings">
+                                    🐉 Fierce Red Dragon
+                                </button>
+                                <button class="btn-example" data-prompt="cute blue robot with glowing antenna">
+                                    🤖 Cute Blue Robot
+                                </button>
+                                <button class="btn-example" data-prompt="menacing gray wolf with yellow eyes">
+                                    🐺 Menacing Wolf
+                                </button>
+                                <button class="btn-example" data-prompt="small green goblin with big ears and mischievous grin">
+                                    👺 Mischievous Goblin
+                                </button>
+                                <button class="btn-example" data-prompt="heroic human warrior in silver armor">
+                                    ⚔️ Heroic Warrior
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="panel">
+                        <h2>Generated Result</h2>
+                        <div class="canvas-container">
+                            <canvas id="text-to-asset-canvas" width="400" height="400"></canvas>
+                            <div id="text-to-asset-loading" class="loading hidden">Generating...</div>
+                        </div>
+                        
+                        <div id="variations-grid" class="variations-grid" style="display: none; margin-top: 20px;">
+                            <!-- Will show 5 versions to pick from -->
+                        </div>
+                        
+                        <div id="text-to-asset-info" class="asset-info hidden">
+                            <h3>Generated Asset</h3>
+                            <p><strong>Interpreted as:</strong> <span id="interpreted-prompt">-</span></p>
+                            <p><strong>Species:</strong> <span id="interpreted-species">-</span></p>
+                            <p><strong>Style:</strong> <span id="interpreted-style">-</span></p>
+                        </div>
+
+                        <button id="download-text-asset" class="btn btn-export" disabled>
+                            📥 Download Asset
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ANIMATIONS TAB -->
+            <div id="animations-tab" class="tab-panel">
+                <div class="panel">
+                    <h2>🎬 Animation Generator</h2>
+                    <p class="info-text">Create sprite animations and cycles</p>
+                    
+                    <div class="form-group">
+                        <label for="animation-type">Animation Type</label>
+                        <select id="animation-type" class="input-field">
+                            <option value="walk">Walk Cycle</option>
+                            <option value="idle">Idle Animation</option>
+                            <option value="attack">Attack</option>
+                            <option value="jump">Jump</option>
+                            <option value="death">Death</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="frame-count">Frame Count: <span id="frame-count-value">8</span></label>
+                        <input type="range" id="frame-count" class="slider" min="4" max="16" value="8">
+                    </div>
+
+                    <button id="generate-animation-btn" class="btn btn-primary">
+                        🎬 Generate Animation
+                    </button>
+
+                    <div class="animation-preview hidden" id="animation-preview">
+                        <h3>Animation Preview</h3>
+                        <canvas id="animation-canvas" width="400" height="400"></canvas>
+                        <div class="animation-controls">
+                            <button id="play-animation-btn" class="btn-small">▶️ Play</button>
+                            <button id="pause-animation-btn" class="btn-small">⏸️ Pause</button>
+                            <label>FPS: <input type="number" id="animation-fps" value="12" min="1" max="60"></label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PARTICLES TAB -->
+            <div id="particles-tab" class="tab-panel">
+                <div class="panel">
+                    <h2>💫 Particle Effects Generator</h2>
+                    <p class="info-text">Create stunning particle effects</p>
+                    
+                    <div class="form-group">
+                        <label for="particle-type">Effect Type</label>
+                        <select id="particle-type" class="input-field">
+                            <option value="fire">Fire</option>
+                            <option value="smoke">Smoke</option>
+                            <option value="sparkle">Sparkle</option>
+                            <option value="explosion">Explosion</option>
+                            <option value="magic">Magic</option>
+                            <option value="rain">Rain</option>
+                            <option value="snow">Snow</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="particle-count">Particle Count: <span id="particle-count-value">50</span></label>
+                        <input type="range" id="particle-count" class="slider" min="10" max="200" value="50">
+                    </div>
+
+                    <button id="generate-particles-btn" class="btn btn-primary">
+                        💫 Generate Particles
+                    </button>
+
+                    <div class="particle-preview">
+                        <canvas id="particle-canvas" width="400" height="400"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- WORLD TAB -->
+            <div id="world-tab" class="tab-panel">
+                <div class="panel">
+                    <h2>🌍 World Generator</h2>
+                    <p class="info-text">Generate tile-based worlds and maps</p>
+                    
+                    <div class="form-group">
+                        <label for="world-size">World Size</label>
+                        <select id="world-size" class="input-field">
+                            <option value="small">Small (16x16)</option>
+                            <option value="medium" selected>Medium (32x32)</option>
+                            <option value="large">Large (64x64)</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="biome-type">Biome</label>
+                        <select id="biome-type" class="input-field">
+                            <option value="forest">Forest</option>
+                            <option value="desert">Desert</option>
+                            <option value="snow">Snow</option>
+                            <option value="dungeon">Dungeon</option>
+                            <option value="cave">Cave</option>
+                        </select>
+                    </div>
+
+                    <button id="generate-world-btn" class="btn btn-primary">
+                        🌍 Generate World
+                    </button>
+
+                    <div class="world-preview">
+                        <canvas id="world-canvas" width="512" height="512"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ITEMS TAB -->
+            <div id="items-tab" class="tab-panel">
+                <div class="panel">
+                    <h2>⚔️ Item Generator</h2>
+                    <p class="info-text">Generate weapons, potions, and equipment</p>
+                    
+                    <div class="form-group">
+                        <label for="item-category">Item Category</label>
+                        <select id="item-category" class="input-field">
+                            <option value="weapon">Weapons</option>
+                            <option value="armor">Armor</option>
+                            <option value="potion">Potions</option>
+                            <option value="scroll">Scrolls</option>
+                            <option value="treasure">Treasure</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="item-rarity">Rarity</label>
+                        <select id="item-rarity" class="input-field">
+                            <option value="common">Common</option>
+                            <option value="uncommon">Uncommon</option>
+                            <option value="rare">Rare</option>
+                            <option value="epic">Epic</option>
+                            <option value="legendary">Legendary</option>
+                        </select>
+                    </div>
+
+                    <button id="generate-item-btn" class="btn btn-primary">
+                        ⚔️ Generate Item
+                    </button>
+
+                    <div class="item-preview">
+                        <canvas id="item-canvas" width="400" height="400"></canvas>
+                        <div id="item-stats" class="item-stats hidden">
+                            <h3>Item Properties</h3>
+                            <p><strong>Name:</strong> <span id="item-name">-</span></p>
+                            <p><strong>Type:</strong> <span id="item-type">-</span></p>
+                            <p><strong>Rarity:</strong> <span id="item-rarity-display">-</span></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- UI ELEMENTS TAB -->
+            <div id="ui-elements-tab" class="tab-panel">
+                <div class="panel">
+                    <h2>🎯 UI Elements Generator</h2>
+                    <p class="info-text">Generate buttons, panels, and UI components</p>
+                    
+                    <div class="form-group">
+                        <label for="ui-element-type">Element Type</label>
+                        <select id="ui-element-type" class="input-field">
+                            <option value="button">Button</option>
+                            <option value="panel">Panel</option>
+                            <option value="health-bar">Health Bar</option>
+                            <option value="mana-bar">Mana Bar</option>
+                            <option value="icon">Icon</option>
+                            <option value="frame">Frame</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="ui-style">UI Style</label>
+                        <select id="ui-style" class="input-field">
+                            <option value="fantasy">Fantasy</option>
+                            <option value="modern">Modern</option>
+                            <option value="sci-fi">Sci-Fi</option>
+                            <option value="minimal">Minimal</option>
+                        </select>
+                    </div>
+
+                    <button id="generate-ui-btn" class="btn btn-primary">
+                        🎯 Generate UI Element
+                    </button>
+
+                    <div class="ui-preview">
+                        <canvas id="ui-canvas" width="400" height="400"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- BATCH TAB -->
+            <div id="batch-tab" class="tab-panel">
+                <div class="panel">
+                    <h2>📦 Batch Generator</h2>
+                    <p class="info-text">Generate multiple sprites at once</p>
+                    
+                    <div class="form-group">
+                        <label for="batch-count">Number of Sprites: <span id="batch-count-value">10</span></label>
+                        <input type="range" id="batch-count" class="slider" min="5" max="50" value="10">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="batch-species">Species Mix</label>
+                        <select id="batch-species" class="input-field">
+                            <option value="random">Random Mix</option>
+                            <option value="dragon">All Dragons</option>
+                            <option value="wolf">All Wolves</option>
+                            <option value="goblin">All Goblins</option>
+                            <option value="robot">All Robots</option>
+                            <option value="human">All Humans</option>
+                        </select>
+                    </div>
+
+                    <button id="generate-batch-btn" class="btn btn-primary">
+                        📦 Generate Batch
+                    </button>
+
+                    <div id="batch-progress" class="batch-progress hidden">
+                        <div class="progress-bar">
+                            <div id="progress-fill" class="progress-fill"></div>
+                        </div>
+                        <p id="progress-text">Generating...</p>
+                    </div>
+
+                    <div id="batch-results" class="batch-results">
+                        <!-- Generated sprites will be displayed here -->
+                    </div>
+
+                    <button id="download-batch-btn" class="btn btn-export" disabled>
+                        📥 Download All as ZIP
+                    </button>
+                </div>
+            </div>
+
+            <!-- GALLERY TAB -->
+            <div id="gallery-tab" class="tab-panel">
+                <div class="panel">
+                    <h2>🖼️ Sprite Gallery</h2>
+                    <p class="info-text">Saved sprites (stored locally in browser)</p>
+                    
+                    <div class="gallery-controls">
+                        <button id="export-gallery-btn" class="btn-small">📤 Export Gallery</button>
+                        <button id="import-gallery-btn" class="btn-small">📥 Import Gallery</button>
+                        <button id="clear-gallery-btn" class="btn-small">🗑️ Clear All</button>
+                        <input type="file" id="import-gallery-input" accept=".json" style="display: none;">
+                        
+                        <div class="gallery-filter">
+                            <label>Filter by Species:</label>
+                            <select id="gallery-filter-species" class="input-field">
+                                <option value="all">All Species</option>
+                                <option value="dragon">Dragons</option>
+                                <option value="wolf">Wolves</option>
+                                <option value="goblin">Goblins</option>
+                                <option value="robot">Robots</option>
+                                <option value="human">Humans</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div id="gallery-stats" class="gallery-stats">
+                        <p><strong>Total Sprites:</strong> <span id="gallery-count">0</span></p>
+                    </div>
+                    
+                    <div id="gallery-grid" class="gallery-grid">
+                        <!-- Gallery items will be inserted here -->
+                    </div>
+                </div>
             </div>
         </div>
 
         <!-- Footer -->
         <footer class="footer">
             <p>From rules and randomness, we create reality.</p>
-            <p class="footer-small">Phase 1: Foundation - Basic shape generation active</p>
+            <p class="footer-small">Production-Ready Quality Sprite Generation</p>
         </footer>
     </div>
 
     <script src="/js/api/client.js"></script>
+    <script src="/js/gallery.js"></script>
     <script src="/js/app.js"></script>
 </body>
 </html>

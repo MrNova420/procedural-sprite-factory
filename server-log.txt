@@ -1,0 +1,71 @@
+
+> procedural-sprite-factory@1.0.0 start
+> node server/server.js
+
+🎨 Procedural Sprite Factory running on http://localhost:3000
+📚 API endpoints:
+  POST /api/generate - Generate sprite
+  POST /api/dna/* - DNA operations (mutate, breed, serialize)
+  POST /api/assets/* - Game assets (terrain, trees, rocks, buildings)
+  POST /api/universal/* - Text-to-asset & variations
+  POST /api/items/* - Items (weapons, armor, consumables)
+  POST /api/ui/* - UI elements (panels, buttons, icons, bars)
+  POST /api/animations/* - Animations (walk, action, custom)
+  POST /api/effects/* - Particle effects (combat, magic, environment)
+  POST /api/world/* - World generation (overworld, dungeons)
+  GET  /api/export/png/:id - Export PNG
+
+🎉 COMPLETE: All 11 Phases Implemented!
+  ✅ Foundation, Shape Engine, Texture Brain
+  ✅ DNA System, Terrain & Environment
+  ✅ Ultimate Generation, Items, UI Assets
+  ✅ Animations, Particle Effects, World Generation
+
+🚀 Try text-to-asset: POST /api/universal/from-text
+  Body: { "prompt": "A fierce red dragon" }
+
+[2026-01-08T11:18:59.847Z] POST /api/generate
+Headers: {
+  "host": "localhost:3000",
+  "connection": "keep-alive",
+  "content-length": "77",
+  "sec-ch-ua-platform": "\"Windows\"",
+  "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36",
+  "sec-ch-ua": "\"Google Chrome\";v=\"143\", \"Chromium\";v=\"143\", \"Not A(Brand\";v=\"24\"",
+  "dnt": "1",
+  "content-type": "application/json",
+  "sec-ch-ua-mobile": "?0",
+  "accept": "*/*",
+  "origin": "http://localhost:3000",
+  "sec-fetch-site": "same-origin",
+  "sec-fetch-mode": "cors",
+  "sec-fetch-dest": "empty",
+  "referer": "http://localhost:3000/",
+  "accept-encoding": "gzip, deflate, br, zstd",
+  "accept-language": "en-US,en;q=0.9",
+  "cookie": "connect.sid=s%3AyaCluq1TaeMJf3B7ebpqm2-HxsZrAY5j.Zy1b7xpQTdMFb3ZMlwFKlz8uSkfRkCFTUAmk2WfYnBA"
+}
+Body: {
+  "species": "dragon",
+  "size": 2.7,
+  "style": "cute",
+  "colors": {
+    "primary": "#d4f155"
+  }
+}
+Generating sprite with DNA: {
+  "species": "dragon",
+  "size": 2.7,
+  "colors": {
+    "primary": "#d4f155"
+  },
+  "style": "cute",
+  "features": {},
+  "equipment": {},
+  "state": {
+    "pose": "idle"
+  },
+  "enableTextures": true
+}
+[2026-01-08T11:18:59.847Z] Response Status: 200
+Response (truncated): {"success":true,"id":"2c88c116ef8369e6","image":"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAIAAAACACAYAAADDPmHLAAAABmJLR0QA/wD/AP+gvaeTAAAgAElEQVR4nO29eZRc13kf+Lv3vqXW7qpuVKOxNtkkQRAgJUs2rWVkkePxxHFiK8nxUCfykki2ohnHkWbiEzuWdWSAsY+lyIssWbYcT+zYycw4GSZKJtI4M8wxBUojKZFFbSYRipQhFQBi6UJ3dXUtr95y7zd/fO++erV0YyFAthR8OA/1qur1q/fe991vXwS+BYAAgZMnBY4dE2g0BKpVgbU1iWJRoNeT8DwBzxNwXYGtLZH94dwcoV4nJAkhjgkXLwJBQOj3CXv30tiPFIsCrZZAsSiwbx/Q7crsfAsLQLcrUK/zKwA4jkAYSigl4HkSWitorWCMMg8WvzkIYhAJAPZyZLZ/7twayqH3z...

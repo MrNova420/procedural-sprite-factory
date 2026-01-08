@@ -18,6 +18,25 @@
       "eyes": "#4169E1"
     }
   },
+  "human": {
+    "bodyType": "biped",
+    "proportions": {
+      "head": 1.0,
+      "torso": 1.0,
+      "arms": 1.0,
+      "legs": 1.0
+    },
+    "features": {
+      "eyes": "round",
+      "mouth": "normal",
+      "ears": "rounded"
+    },
+    "defaultColors": {
+      "skin": "#FFE4C4",
+      "hair": "#4A3C2A",
+      "eyes": "#4169E1"
+    }
+  },
   "dragon": {
     "bodyType": "flying",
     "proportions": {

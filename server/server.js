@@ -7,6 +7,33 @@ const PORT = process.env.PORT || 3000;
 app.use(express.json());
 app.use(express.static(path.join(__dirname, '../client')));
 
+// Comprehensive request logging
+app.use((req, res, next) => {
+  const timestamp = new Date().toISOString();
+  console.log(`\n[${timestamp}] ${req.method} ${req.url}`);
+  console.log('Headers:', JSON.stringify(req.headers, null, 2));
+  if (req.body && Object.keys(req.body).length > 0) {
+    console.log('Body:', JSON.stringify(req.body, null, 2));
+  }
+  
+  // Log response
+  const oldSend = res.send;
+  res.send = function(data) {
+    console.log(`[${timestamp}] Response Status: ${res.statusCode}`);
+    if (data) {
+      const dataStr = data.toString();
+      if (dataStr.length > 500) {
+        console.log('Response (truncated):', dataStr.substring(0, 500) + '...');
+      } else {
+        console.log('Response:', dataStr);
+      }
+    }
+    oldSend.apply(res, arguments);
+  };
+  
+  next();
+});
+
 // Import routes
 const generateRoutes = require('./routes/generate');
 const exportRoutes = require('./routes/export');
@@ -36,12 +63,46 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, '../client/index.html'));
 });
 
+// 404 handler
+app.use((req, res, next) => {
+  console.error(`❌ 404 NOT FOUND: ${req.method} ${req.url}`);
+  res.status(404).json({ 
+    error: 'Not found', 
+    message: `Endpoint ${req.method} ${req.url} does not exist`,
+    availableEndpoints: [
+      'POST /api/generate',
+      'POST /api/dna/*',
+      'POST /api/assets/*',
+      'POST /api/universal/*',
+      'POST /api/items/*',
+      'POST /api/ui/*',
+      'POST /api/animations/*',
+      'POST /api/effects/*',
+      'POST /api/world/*',
+      'GET /api/export/png/:id'
+    ]
+  });
+});
+
 // Error handling middleware
 app.use((err, req, res, next) => {
-  console.error('Error:', err);
+  console.error('\n🚨 ERROR OCCURRED:');
+  console.error('Path:', req.method, req.url);
+  console.error('Error:', err.message);
+  console.error('Stack:', err.stack);
+  
+  // Check for common issues
+  if (err.message.includes('PLACEHOLDER')) {
+    console.error('⚠️  PLACEHOLDER DETECTED IN CODE!');
+  }
+  if (err.message.includes('TODO')) {
+    console.error('⚠️  TODO DETECTED IN CODE!');
+  }
+  
   res.status(500).json({ 
     error: 'Internal server error', 
-    message: err.message 
+    message: err.message,
+    stack: process.env.NODE_ENV === 'development' ? err.stack : undefined
   });
 });
 
