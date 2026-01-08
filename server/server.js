@@ -10,10 +10,12 @@ app.use(express.static(path.join(__dirname, '../client')));
 // Import routes
 const generateRoutes = require('./routes/generate');
 const exportRoutes = require('./routes/export');
+const dnaRoutes = require('./routes/dna');
 
 // API Routes
 app.use('/api/generate', generateRoutes);
 app.use('/api/export', exportRoutes);
+app.use('/api/dna', dnaRoutes);
 
 // Serve the main dashboard
 app.get('/', (req, res) => {

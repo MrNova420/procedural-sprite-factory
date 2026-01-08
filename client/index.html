@@ -54,6 +54,42 @@
 
                 <button id="generate-btn" class="btn btn-primary">Generate Sprite</button>
                 <button id="random-btn" class="btn btn-secondary">Random</button>
+                <button id="mutate-btn" class="btn btn-secondary" disabled>Mutate Current</button>
+            </div>
+
+            <!-- DNA Panel -->
+            <div class="dna-panel panel">
+                <h2>DNA Tools</h2>
+                
+                <div class="dna-actions">
+                    <button id="save-dna-btn" class="btn-small" disabled>💾 Save DNA</button>
+                    <button id="load-dna-btn" class="btn-small">📂 Load DNA</button>
+                    <button id="share-dna-btn" class="btn-small" disabled>🔗 Share Link</button>
+                </div>
+
+                <div id="dna-info" class="dna-info hidden">
+                    <h3>Current DNA</h3>
+                    <p><strong>ID:</strong> <span id="dna-id">-</span></p>
+                    <p><strong>Species:</strong> <span id="dna-species">-</span></p>
+                    <p><strong>Variant:</strong> <span id="dna-variant">-</span></p>
+                    <p><strong>Generation:</strong> <span id="dna-generation">-</span></p>
+                    <p><strong>Rarity:</strong> <span id="dna-rarity">-</span></p>
+                    <p><strong>Name:</strong> <span id="dna-name">-</span></p>
+                </div>
+
+                <div class="breeding-section">
+                    <h3>Breeding Lab</h3>
+                    <p class="info-text">Save two sprites, then breed them together</p>
+                    <div id="parents-display" class="parents-display">
+                        <div class="parent-slot" id="parent1-slot">
+                            <span>Parent 1: Empty</span>
+                        </div>
+                        <div class="parent-slot" id="parent2-slot">
+                            <span>Parent 2: Empty</span>
+                        </div>
+                    </div>
+                    <button id="breed-btn" class="btn btn-secondary" disabled>🧬 Breed</button>
+                </div>
             </div>
 
             <!-- Preview Panel -->

@@ -9,6 +9,75 @@
     flex-direction: column;
 }
 
+.dna-panel {
+    grid-column: 1 / -1;
+    margin-top: 20px;
+}
+
+.dna-actions {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+}
+
+.dna-info {
+    background: var(--dark-bg);
+    padding: 15px;
+    border-radius: 4px;
+    margin-bottom: 20px;
+}
+
+.dna-info h3 {
+    color: var(--primary-color);
+    margin-bottom: 10px;
+}
+
+.dna-info p {
+    margin: 5px 0;
+}
+
+.breeding-section {
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border-color);
+}
+
+.breeding-section h3 {
+    color: var(--primary-color);
+    margin-bottom: 10px;
+}
+
+.info-text {
+    color: #888;
+    font-size: 0.9em;
+    margin-bottom: 15px;
+}
+
+.parents-display {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.parent-slot {
+    background: var(--dark-bg);
+    padding: 15px;
+    border-radius: 4px;
+    border: 2px dashed var(--border-color);
+    text-align: center;
+    min-height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.parent-slot.filled {
+    border-color: var(--primary-color);
+    border-style: solid;
+}
+
 @media (max-width: 768px) {
     .header h1 {
         font-size: 2em;
@@ -19,6 +88,10 @@
     }
     
     .export-buttons {
+        grid-template-columns: 1fr;
+    }
+    
+    .parents-display {
         grid-template-columns: 1fr;
     }
 }

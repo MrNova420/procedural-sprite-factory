@@ -1,6 +1,7 @@
 const CanvasManager = require('./canvas-manager');
 const ShapeEngine = require('../generators/shape-engine');
 const TextureBrain = require('../generators/texture-brain');
+const DNAGenerator = require('../generators/dna-generator');
 const { generateId } = require('../utils/helpers');
 
 /**
@@ -12,6 +13,7 @@ class Engine {
     this.canvasManager = new CanvasManager();
     this.shapeEngine = new ShapeEngine();
     this.textureBrain = new TextureBrain();
+    this.dnaGenerator = new DNAGenerator();
     this.cache = new Map(); // Store generated sprites
   }
 
@@ -24,8 +26,18 @@ class Engine {
     const startTime = Date.now();
     
     try {
-      // Generate unique ID
-      const id = generateId();
+      // If DNA is incomplete, generate full DNA
+      if (!dna.id || !dna.meta) {
+        dna = this.dnaGenerator.generate(dna.species, dna);
+      }
+      
+      // Validate DNA
+      const validation = this.dnaGenerator.validate(dna);
+      if (!validation.valid) {
+        throw new Error(validation.error);
+      }
+      
+      const id = dna.id || generateId();
       
       // Set up canvas based on size requirements
       const size = this.calculateSize(dna.size || 1.0);
