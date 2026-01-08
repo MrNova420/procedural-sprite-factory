@@ -1,0 +1,121 @@
+{
+  "skin": {
+    "type": "organic",
+    "baseRoughness": 0.7,
+    "noiseType": "perlin",
+    "noiseScale": 0.05,
+    "noiseStrength": 0.1,
+    "variations": "subtle",
+    "shading": "soft",
+    "subsurface": true,
+    "colorVariation": 0.05
+  },
+  "fur": {
+    "type": "organic",
+    "baseRoughness": 0.8,
+    "noiseType": "fractal",
+    "noiseScale": 0.1,
+    "noiseStrength": 0.3,
+    "variations": "medium",
+    "shading": "soft",
+    "directionality": true,
+    "colorVariation": 0.15
+  },
+  "scales": {
+    "type": "organic",
+    "baseRoughness": 0.3,
+    "noiseType": "voronoi",
+    "noiseScale": 0.2,
+    "noiseStrength": 0.4,
+    "variations": "strong",
+    "shading": "hard",
+    "pattern": "cellular",
+    "colorVariation": 0.2
+  },
+  "metal": {
+    "type": "inorganic",
+    "baseRoughness": 0.2,
+    "noiseType": "voronoi",
+    "noiseScale": 0.3,
+    "noiseStrength": 0.2,
+    "metallic": true,
+    "reflective": true,
+    "shading": "hard",
+    "scratches": true,
+    "colorVariation": 0.05
+  },
+  "cloth": {
+    "type": "fabric",
+    "baseRoughness": 0.8,
+    "noiseType": "fractal",
+    "noiseScale": 0.08,
+    "noiseStrength": 0.15,
+    "weavePattern": true,
+    "folds": true,
+    "shading": "medium",
+    "colorVariation": 0.1
+  },
+  "stone": {
+    "type": "inorganic",
+    "baseRoughness": 0.9,
+    "noiseType": "perlin",
+    "noiseScale": 0.15,
+    "noiseStrength": 0.5,
+    "variations": "strong",
+    "shading": "hard",
+    "cracks": true,
+    "colorVariation": 0.3
+  },
+  "wood": {
+    "type": "organic",
+    "baseRoughness": 0.7,
+    "noiseType": "perlin",
+    "noiseScale": 0.05,
+    "noiseStrength": 0.4,
+    "variations": "medium",
+    "shading": "medium",
+    "grain": true,
+    "rings": true,
+    "colorVariation": 0.2
+  },
+  "crystal": {
+    "type": "inorganic",
+    "baseRoughness": 0.1,
+    "noiseType": "voronoi",
+    "noiseScale": 0.3,
+    "noiseStrength": 0.6,
+    "metallic": false,
+    "transparent": true,
+    "reflective": true,
+    "shading": "hard",
+    "facets": true,
+    "glow": true,
+    "colorVariation": 0.1
+  },
+  "slime": {
+    "type": "organic",
+    "baseRoughness": 0.1,
+    "noiseType": "perlin",
+    "noiseScale": 0.1,
+    "noiseStrength": 0.2,
+    "variations": "subtle",
+    "shading": "soft",
+    "translucent": true,
+    "subsurface": true,
+    "goo": true,
+    "colorVariation": 0.05
+  },
+  "energy": {
+    "type": "special",
+    "baseRoughness": 0.0,
+    "noiseType": "fractal",
+    "noiseScale": 0.2,
+    "noiseStrength": 0.8,
+    "variations": "extreme",
+    "shading": "glow",
+    "transparent": true,
+    "glow": true,
+    "animated": true,
+    "colorVariation": 0.4
+  }
+}

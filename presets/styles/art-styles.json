@@ -1,0 +1,90 @@
+{
+  "pixel": {
+    "name": "Classic Pixel Art",
+    "outlineThickness": 1,
+    "outlineColor": "#000000",
+    "paletteSize": 16,
+    "saturation": 1.0,
+    "contrast": 1.0,
+    "dither": false,
+    "antialiasing": false,
+    "pixelPerfect": true
+  },
+  "dark-fantasy": {
+    "name": "Dark Fantasy",
+    "outlineThickness": 2,
+    "outlineColor": "#000000",
+    "paletteSize": 32,
+    "saturation": 0.7,
+    "contrast": 1.3,
+    "shadows": "hard",
+    "highlights": "sharp",
+    "dither": false,
+    "glow": false,
+    "mood": "dark"
+  },
+  "cyberpunk": {
+    "name": "Cyberpunk",
+    "outlineThickness": 1,
+    "outlineColor": "#00FFFF",
+    "paletteSize": 64,
+    "saturation": 1.5,
+    "contrast": 1.4,
+    "shadows": "neon",
+    "highlights": "bloom",
+    "dither": false,
+    "glow": true,
+    "scanlines": true,
+    "glowColor": "#00FFFF"
+  },
+  "cute": {
+    "name": "Cute/Chibi",
+    "outlineThickness": 2,
+    "outlineColor": "#4A3C2A",
+    "paletteSize": 24,
+    "saturation": 1.3,
+    "contrast": 0.9,
+    "shadows": "soft",
+    "highlights": "rounded",
+    "dither": false,
+    "smoothing": true,
+    "mood": "happy"
+  },
+  "retro-nes": {
+    "name": "Retro NES",
+    "outlineThickness": 1,
+    "outlineColor": "#000000",
+    "paletteSize": 4,
+    "saturation": 1.0,
+    "contrast": 1.0,
+    "dither": true,
+    "ditherPattern": "2x2",
+    "pixelPerfect": true,
+    "resolution": "low"
+  },
+  "retro-snes": {
+    "name": "Retro SNES",
+    "outlineThickness": 1,
+    "outlineColor": "#000000",
+    "paletteSize": 16,
+    "saturation": 1.0,
+    "contrast": 1.0,
+    "shadows": "dithered",
+    "highlights": "flat",
+    "dither": true,
+    "pixelPerfect": true
+  },
+  "hd-pixel": {
+    "name": "HD Pixel Art",
+    "outlineThickness": 1,
+    "outlineColor": "#000000",
+    "paletteSize": 256,
+    "saturation": 1.2,
+    "contrast": 1.1,
+    "shadows": "smooth",
+    "highlights": "gradient",
+    "dither": false,
+    "antialiasing": true,
+    "resolution": "high"
+  }
+}
