@@ -1,5 +1,6 @@
 const CanvasManager = require('./canvas-manager');
 const ShapeEngine = require('../generators/shape-engine');
+const TextureBrain = require('../generators/texture-brain');
 const { generateId } = require('../utils/helpers');
 
 /**
@@ -10,6 +11,7 @@ class Engine {
   constructor() {
     this.canvasManager = new CanvasManager();
     this.shapeEngine = new ShapeEngine();
+    this.textureBrain = new TextureBrain();
     this.cache = new Map(); // Store generated sprites
   }
 
@@ -36,7 +38,18 @@ class Engine {
       // PHASE 1: Generate shape/silhouette
       await this.shapeEngine.generateShape(ctx, dna, size);
       
-      // TODO: PHASE 2: Apply textures (Texture Brain)
+      // PHASE 2: Apply textures (Texture Brain)
+      const materialType = this.getMaterialType(dna.species);
+      if (dna.enableTextures !== false) {
+        this.textureBrain.applyTexture(ctx, materialType, {
+          baseColor: this.hexToRgb(dna.colors?.primary || '#FFFFFF'),
+          seed: Math.random() * 1000
+        });
+        
+        // Apply shading
+        this.textureBrain.applyShading(ctx, {x: -1, y: -1, z: 1}, 0.3);
+      }
+      
       // TODO: PHASE 3: Apply style (Style Engine)
       // TODO: PHASE 4: Add VFX if specified
       
@@ -78,6 +91,32 @@ class Engine {
     
     // Clamp to valid range (16-128)
     return Math.max(16, Math.min(128, size));
+  }
+
+  /**
+   * Get material type for species
+   */
+  getMaterialType(species) {
+    const materials = {
+      dragon: 'scales',
+      wolf: 'fur',
+      goblin: 'skin',
+      robot: 'metal',
+      human: 'skin'
+    };
+    return materials[species] || 'skin';
+  }
+
+  /**
+   * Convert hex color to RGB array
+   */
+  hexToRgb(hex) {
+    hex = hex.replace('#', '');
+    return [
+      parseInt(hex.substring(0, 2), 16),
+      parseInt(hex.substring(2, 4), 16),
+      parseInt(hex.substring(4, 6), 16)
+    ];
   }
 
   /**
