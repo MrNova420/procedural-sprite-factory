@@ -1,6 +1,6 @@
 const { createNoise2D } = require('simplex-noise');
+const seedrandom = require('seedrandom');
 const MathUtils = require('../utils/math');
-const ColorUtils = require('../utils/colors');
 
 /**
  * Terrain Generator
@@ -8,7 +8,7 @@ const ColorUtils = require('../utils/colors');
  */
 class TerrainGenerator {
   constructor() {
-    this.noise2D = createNoise2D();
+    // Noise instances will be created per-tile with seed
     this.tileSize = 16; // Default 16x16 tiles
     
     // Terrain type definitions
@@ -175,6 +175,10 @@ class TerrainGenerator {
    * Apply pattern to tile
    */
   applyPattern(ctx, terrain, seed) {
+    // Create noise instance with seed for this tile
+    const rng = seedrandom(seed.toString());
+    const noise2D = createNoise2D(rng);
+    
     const imageData = ctx.getImageData(0, 0, this.tileSize, this.tileSize);
     const data = imageData.data;
     
@@ -183,7 +187,7 @@ class TerrainGenerator {
         const index = (y * this.tileSize + x) * 4;
         
         // Get noise value
-        const noise = this.noise2D(
+        const noise = noise2D(
           (x + seed) * terrain.noiseScale,
           (y + seed) * terrain.noiseScale
         );

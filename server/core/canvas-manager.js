@@ -1,4 +1,4 @@
-const { createCanvas, Image } = require('canvas');
+const { createCanvas } = require('canvas');
 
 /**
  * Canvas Manager

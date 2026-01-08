@@ -19,7 +19,6 @@ class AnimationEngine {
     } = options;
 
     const frames = [];
-    const baseHeight = dna.proportions?.height || 1.0;
     
     for (let i = 0; i < frameCount; i++) {
       const phase = (i / frameCount) * Math.PI * 2;
@@ -87,8 +86,7 @@ class AnimationEngine {
    */
   generateActionAnimation(dna, actionType, options = {}) {
     const {
-      frameCount = 6,
-      weaponType = 'sword'
+      frameCount = 6
     } = options;
 
     const frames = [];

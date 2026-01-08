@@ -4,11 +4,11 @@
  */
 
 const { createNoise2D } = require('simplex-noise');
-const MathUtils = require('../utils/math');
+const seedrandom = require('seedrandom');
 
 class WorldGenerator {
   constructor() {
-    this.noise = createNoise2D();
+    // Noise instances will be created per-generation with seed
   }
 
   /**
@@ -25,11 +25,15 @@ class WorldGenerator {
     const tiles = [];
     const biomesData = this.getBiomeDefinitions();
     
+    // Create noise instance with seed for reproducibility
+    const rng = seedrandom(seed.toString());
+    const noise = createNoise2D(rng);
+    
     // Generate height map
-    const heightMap = this.generateHeightMap(width, height, seed);
+    const heightMap = this.generateHeightMap(width, height, seed, noise);
     
     // Generate moisture map
-    const moistureMap = this.generateMoistureMap(width, height, seed + 1000);
+    const moistureMap = this.generateMoistureMap(width, height, seed + 1000, noise);
     
     // Assign biomes based on height and moisture
     for (let y = 0; y < height; y++) {
@@ -93,9 +97,9 @@ class WorldGenerator {
     // Add doors
     const doors = this.placeDoors(rooms, corridors, tiles);
     
-    // Add special rooms
-    const entranceRoom = rooms[0];
-    const bossRoom = rooms[rooms.length - 1];
+    // Add special rooms (entranceRoom and bossRoom used for typing)
+    rooms[0].type = 'entrance';
+    rooms[rooms.length - 1].type = 'boss';
     const treasureRooms = rooms.filter((r, i) => i > 0 && i < rooms.length - 1 && Math.random() < 0.3);
     
     return {
@@ -166,7 +170,7 @@ class WorldGenerator {
 
   // Helper methods
 
-  generateHeightMap(width, height, seed) {
+  generateHeightMap(width, height, seed, noise) {
     const map = [];
     
     for (let y = 0; y < height; y++) {
@@ -177,7 +181,7 @@ class WorldGenerator {
         
         // Multiple octaves
         for (let i = 0; i < 4; i++) {
-          value += this.noise.noise2D(
+          value += noise(
             (x + seed) * frequency,
             (y + seed) * frequency
           ) * amplitude;
@@ -195,12 +199,12 @@ class WorldGenerator {
     return map;
   }
 
-  generateMoistureMap(width, height, seed) {
+  generateMoistureMap(width, height, seed, noise) {
     const map = [];
     
     for (let y = 0; y < height; y++) {
       for (let x = 0; x < width; x++) {
-        const value = (this.noise.noise2D(
+        const value = (noise(
           (x + seed) * 0.02,
           (y + seed) * 0.02
         ) + 1) / 2;

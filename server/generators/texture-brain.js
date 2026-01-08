@@ -1,4 +1,5 @@
 const { createNoise2D, createNoise3D } = require('simplex-noise');
+const seedrandom = require('seedrandom');
 const MathUtils = require('../utils/math');
 
 /**
@@ -7,8 +8,6 @@ const MathUtils = require('../utils/math');
  */
 class TextureBrain {
   constructor() {
-    this.noise2D = createNoise2D();
-    this.noise3D = createNoise3D();
     this.materialPresets = require('../../presets/materials/textures.json');
   }
 
@@ -29,8 +28,12 @@ class TextureBrain {
     const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
     const data = imageData.data;
 
-    const baseColor = options.baseColor || [255, 255, 255];
     const seed = options.seed || 0;
+    
+    // Create noise instances with seed for reproducibility
+    const rng = seedrandom(seed.toString());
+    const noise2D = createNoise2D(rng);
+    const noise3D = createNoise3D(rng);
     
     // Apply noise-based texture
     for (let y = 0; y < canvas.height; y++) {
@@ -45,7 +48,9 @@ class TextureBrain {
           x, y, 
           material.noiseType, 
           material.noiseScale,
-          seed
+          seed,
+          noise2D,
+          noise3D
         );
         
         // Apply noise strength
@@ -64,36 +69,36 @@ class TextureBrain {
   /**
    * Get noise value for material
    */
-  getNoiseForMaterial(x, y, noiseType, scale, seed = 0) {
+  getNoiseForMaterial(x, y, noiseType, scale, seed = 0, noise2D, noise3D) {
     const sx = x * scale + seed;
     const sy = y * scale + seed;
 
     switch (noiseType) {
       case 'perlin':
-        return this.noise2D(sx, sy);
+        return noise2D(sx, sy);
       
       case 'fractal':
-        return this.fractalNoise(sx, sy, 4);
+        return this.fractalNoise(sx, sy, 4, noise2D);
       
       case 'voronoi':
         return this.voronoiNoise(sx, sy);
       
       default:
-        return this.noise2D(sx, sy);
+        return noise2D(sx, sy);
     }
   }
 
   /**
    * Fractal noise (multiple octaves)
    */
-  fractalNoise(x, y, octaves = 4, persistence = 0.5) {
+  fractalNoise(x, y, octaves = 4, noise2D, persistence = 0.5) {
     let total = 0;
     let frequency = 1;
     let amplitude = 1;
     let maxValue = 0;
 
     for (let i = 0; i < octaves; i++) {
-      total += this.noise2D(x * frequency, y * frequency) * amplitude;
+      total += noise2D(x * frequency, y * frequency) * amplitude;
       maxValue += amplitude;
       amplitude *= persistence;
       frequency *= 2;

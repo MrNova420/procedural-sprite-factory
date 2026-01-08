@@ -1,5 +1,3 @@
-const MathUtils = require('../utils/math');
-
 /**
  * Skeleton System
  * Creates and manages bone structures for sprites

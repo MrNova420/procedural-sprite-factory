@@ -1,4 +1,3 @@
-const MathUtils = require('../utils/math');
 const ColorUtils = require('../utils/colors');
 
 /**

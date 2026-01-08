@@ -4,7 +4,6 @@
  */
 
 const { createCanvas } = require('canvas');
-const MathUtils = require('../utils/math');
 const ColorUtils = require('../utils/colors');
 
 class ItemGenerator {
