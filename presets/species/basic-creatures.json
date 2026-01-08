@@ -1,0 +1,102 @@
+{
+  "humanoid": {
+    "bodyType": "biped",
+    "proportions": {
+      "head": 1.0,
+      "torso": 1.0,
+      "arms": 1.0,
+      "legs": 1.0
+    },
+    "features": {
+      "eyes": "round",
+      "mouth": "normal",
+      "ears": "rounded"
+    },
+    "defaultColors": {
+      "skin": "#FFE4C4",
+      "hair": "#4A3C2A",
+      "eyes": "#4169E1"
+    }
+  },
+  "dragon": {
+    "bodyType": "flying",
+    "proportions": {
+      "head": 1.2,
+      "torso": 1.5,
+      "wings": 2.0,
+      "tail": 2.5,
+      "legs": 0.8
+    },
+    "features": {
+      "eyes": "slit",
+      "mouth": "fangs",
+      "scales": true,
+      "horns": true,
+      "wings": "bat"
+    },
+    "defaultColors": {
+      "primary": "#8B0000",
+      "secondary": "#FFD700",
+      "eyes": "#FF4500"
+    }
+  },
+  "wolf": {
+    "bodyType": "quadruped",
+    "proportions": {
+      "head": 1.0,
+      "torso": 1.3,
+      "legs": 1.0,
+      "tail": 1.5
+    },
+    "features": {
+      "eyes": "round",
+      "mouth": "fangs",
+      "fur": "thick",
+      "ears": "pointed"
+    },
+    "defaultColors": {
+      "primary": "#808080",
+      "secondary": "#C0C0C0",
+      "eyes": "#FFD700"
+    }
+  },
+  "goblin": {
+    "bodyType": "biped",
+    "proportions": {
+      "head": 1.5,
+      "torso": 0.8,
+      "arms": 0.9,
+      "legs": 0.7
+    },
+    "features": {
+      "eyes": "large",
+      "mouth": "fangs",
+      "ears": "pointed",
+      "skin": "rough"
+    },
+    "defaultColors": {
+      "primary": "#90EE90",
+      "secondary": "#7CCD7C",
+      "eyes": "#FFD700"
+    }
+  },
+  "robot": {
+    "bodyType": "biped",
+    "proportions": {
+      "head": 1.0,
+      "torso": 1.2,
+      "arms": 1.0,
+      "legs": 1.0
+    },
+    "features": {
+      "eyes": "glow",
+      "surface": "metallic",
+      "joints": "mechanical"
+    },
+    "defaultColors": {
+      "primary": "#C0C0C0",
+      "secondary": "#4169E1",
+      "eyes": "#00FFFF"
+    }
+  }
+}

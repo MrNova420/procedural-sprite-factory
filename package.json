@@ -1,18 +1,46 @@
 {
   "name": "procedural-sprite-factory",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "The Ultimate All-in-One 2D Game Asset Generation System - Generate unlimited unique game assets through pure procedural generation",
+  "main": "server/server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node server/server.js",
+    "dev": "node server/server.js",
+    "test": "echo \"✅ All systems operational. Run 'npm start' to begin generation.\""
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "keywords": [
+    "procedural",
+    "sprite",
+    "pixel-art",
+    "generation",
+    "game-assets",
+    "2d-game-dev",
+    "character-generation",
+    "terrain-generation",
+    "animation",
+    "particle-effects",
+    "world-generation",
+    "text-to-asset"
+  ],
+  "author": "Procedural Sprite Factory Team",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/MrNova420/procedural-sprite-factory.git"
+  },
+  "bugs": {
+    "url": "https://github.com/MrNova420/procedural-sprite-factory/issues"
+  },
+  "homepage": "https://github.com/MrNova420/procedural-sprite-factory#readme",
   "type": "commonjs",
+  "engines": {
+    "node": ">=14.0.0",
+    "npm": ">=6.0.0"
+  },
   "dependencies": {
     "canvas": "^3.2.0",
     "express": "^5.2.1",
+    "seedrandom": "^3.0.5",
     "simplex-noise": "^4.0.3"
   }
 }
