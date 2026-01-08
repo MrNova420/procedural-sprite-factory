@@ -78,7 +78,7 @@ class TextureBrain {
         return noise2D(sx, sy);
       
       case 'fractal':
-        return this.fractalNoise(sx, sy, 4, noise2D);
+        return this.fractalNoise(sx, sy, noise2D, 4);
       
       case 'voronoi':
         return this.voronoiNoise(sx, sy);
@@ -91,7 +91,7 @@ class TextureBrain {
   /**
    * Fractal noise (multiple octaves)
    */
-  fractalNoise(x, y, octaves = 4, noise2D, persistence = 0.5) {
+  fractalNoise(x, y, noise2D, octaves = 4, persistence = 0.5) {
     let total = 0;
     let frequency = 1;
     let amplitude = 1;
