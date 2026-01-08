@@ -243,7 +243,9 @@ class ColorUtils {
     const [r, g, b] = this.hexToRgb(hex);
     const [h] = this.rgbToHsl(r, g, b);
     
-    if (h >= 30 && h <= 150) return 'warm';
+    // Warm colors: reds, oranges, yellows (0-60° and 300-360°)
+    // Cool colors: blues, greens (150-270°)
+    if ((h >= 0 && h <= 60) || (h >= 300 && h <= 360)) return 'warm';
     if (h >= 150 && h <= 270) return 'cool';
     return 'neutral';
   }

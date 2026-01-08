@@ -179,10 +179,10 @@ class MathUtils {
     const n01 = noise(X, Y + 1);
     const n11 = noise(X + 1, Y + 1);
     
-    const nx0 = this.lerp(n00, n10, u);
-    const nx1 = this.lerp(n01, n11, u);
+    const nx0 = MathUtils.lerp(n00, n10, u);
+    const nx1 = MathUtils.lerp(n01, n11, u);
     
-    return this.lerp(nx0, nx1, v);
+    return MathUtils.lerp(nx0, nx1, v);
   }
 }
 

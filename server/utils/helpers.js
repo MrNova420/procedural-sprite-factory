@@ -1,10 +1,10 @@
-const crypto = require('crypto');
+const MathUtils = require('../utils/math');
 
 /**
  * Generate unique ID
  */
 function generateId() {
-  return crypto.randomBytes(8).toString('hex');
+  return require('crypto').randomBytes(8).toString('hex');
 }
 
 /**
@@ -27,20 +27,6 @@ function rgbToHex(r, g, b) {
 }
 
 /**
- * Clamp value between min and max
- */
-function clamp(value, min, max) {
-  return Math.min(max, Math.max(min, value));
-}
-
-/**
- * Linear interpolation
- */
-function lerp(start, end, t) {
-  return start + (end - start) * t;
-}
-
-/**
  * Parse DNA from request or apply defaults
  */
 function parseDNA(input) {
@@ -51,7 +37,8 @@ function parseDNA(input) {
     style: input.style || 'pixel',
     features: input.features || {},
     equipment: input.equipment || {},
-    state: input.state || { pose: 'idle' }
+    state: input.state || { pose: 'idle' },
+    enableTextures: input.enableTextures !== false
   };
 }
 
@@ -59,7 +46,8 @@ module.exports = {
   generateId,
   hexToRgb,
   rgbToHex,
-  clamp,
-  lerp,
-  parseDNA
+  parseDNA,
+  // Re-export commonly used MathUtils functions for convenience
+  clamp: MathUtils.clamp,
+  lerp: MathUtils.lerp
 };
