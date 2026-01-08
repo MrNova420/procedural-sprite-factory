@@ -1,0 +1,30 @@
+# Dependencies
+node_modules/
+package-lock.json
+
+# Logs
+logs/
+*.log
+
+# Runtime
+*.pid
+
+# Environment
+.env
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+
+# Build outputs
+dist/
+build/
+exports/
+
+# Data
+data/*.db
