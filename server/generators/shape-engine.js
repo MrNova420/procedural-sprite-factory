@@ -3,6 +3,7 @@ const MathUtils = require('../utils/math');
 const DragonRenderer = require('./dragon-renderer');
 const WolfRenderer = require('./wolf-renderer');
 const UniversalProceduralGenerator = require('./universal-procedural-generator');
+const TopDownRenderer = require('./topdown-renderer');
 
 /**
  * Shape Engine
@@ -14,6 +15,7 @@ class ShapeEngine {
     this.dragonRenderer = new DragonRenderer();
     this.wolfRenderer = new WolfRenderer();
     this.universalGenerator = new UniversalProceduralGenerator();
+    this.topDownRenderer = new TopDownRenderer();
   }
 
   /**
@@ -33,6 +35,44 @@ class ShapeEngine {
     // Add colors to DNA if not present
     if (!dna.colors) {
       dna.colors = { primary: primaryColor, secondary: secondaryColor };
+    }
+    
+    // Check if using top-down rendering
+    if (dna.topDown === true || dna.perspective === 'topdown') {
+      const palette = this.generatePaletteFromDNA(dna);
+      
+      if (dna.generateItem || dna.itemType) {
+        const itemData = this.universalGenerator.generateItem({
+          itemType: dna.itemType,
+          itemCategory: dna.itemCategory,
+          seed: dna.seed,
+          quality: dna.quality,
+          baseHue: dna.baseHue
+        });
+        this.topDownRenderer.renderTopDownItem(ctx, centerX, centerY, size * 0.4, itemData);
+      } else if (dna.generateEnvironment || dna.assetType) {
+        const envData = this.universalGenerator.generateEnvironmentAsset({
+          assetType: dna.assetType,
+          assetCategory: dna.assetCategory,
+          seed: dna.seed,
+          baseHue: dna.baseHue
+        });
+        this.topDownRenderer.renderTopDownEnvironment(ctx, centerX, centerY, size * 0.4, envData);
+      } else {
+        // Top-down character
+        const params = {
+          archetype: dna.archetype || 'biped',
+          material: dna.material || 'flesh',
+          palette,
+          features: this.universalGenerator.generateFeatures({seed: dna.seed}),
+          showUI: dna.showUI,
+          selected: dna.selected,
+          showHealth: dna.showHealth,
+          health: dna.health
+        };
+        this.topDownRenderer.renderTopDownCharacter(ctx, centerX, centerY, size * 0.4, params);
+      }
+      return;
     }
     
     // Check if generating items
@@ -1229,6 +1269,48 @@ class ShapeEngine {
     };
     
     return colors[species] || '#4169E1'; // Default blue
+  }
+
+  /**
+   * Generate color palette from DNA
+   */
+  generatePaletteFromDNA(dna) {
+    const baseHue = dna.baseHue !== undefined ? dna.baseHue : 0;
+    const primary = this.hslToHex(baseHue, 70, 50);
+    const secondary = this.hslToHex((baseHue + 30) % 360, 70, 60);
+    const accent = this.hslToHex((baseHue + 180) % 360, 80, 55);
+    const shadow = this.hslToHex(baseHue, 30, 20);
+    const highlight = this.hslToHex(baseHue, 50, 80);
+    
+    return { primary, secondary, accent, shadow, highlight };
+  }
+
+  /**
+   * HSL to Hex conversion
+   */
+  hslToHex(h, s, l) {
+    s /= 100;
+    l /= 100;
+    
+    const c = (1 - Math.abs(2 * l - 1)) * s;
+    const x = c * (1 - Math.abs((h / 60) % 2 - 1));
+    const m = l - c / 2;
+    
+    let r = 0, g = 0, b = 0;
+    
+    if (h < 60) { r = c; g = x; b = 0; }
+    else if (h < 120) { r = x; g = c; b = 0; }
+    else if (h < 180) { r = 0; g = c; b = x; }
+    else if (h < 240) { r = 0; g = x; b = c; }
+    else if (h < 300) { r = x; g = 0; b = c; }
+    else { r = c; g = 0; b = x; }
+    
+    const toHex = (n) => {
+      const hex = Math.round((n + m) * 255).toString(16);
+      return hex.length === 1 ? '0' + hex : hex;
+    };
+    
+    return `#${toHex(r)}${toHex(g)}${toHex(b)}`;
   }
 
   /**
