@@ -678,17 +678,47 @@ class UniversalProceduralGenerator extends AdvancedRenderer {
     return `#${toHex(r)}${toHex(g)}${toHex(b)}`;
   }
 
-  // Item generation methods (placeholders for now)
-  determineItemType(params) { return 'sword'; }
-  generateItemShape(itemType, params) { return {}; }
-  generateItemDetails(itemType, params) { return {}; }
-  createItemRenderInstructions(baseShape, details, material, palette) { return { layers: [] }; }
+  // Item generation methods (TODO: Implement full item generation system)
+  determineItemType(params) { 
+    // TODO: Implement item type determination logic
+    return 'sword'; 
+  }
+  
+  generateItemShape(itemType, params) { 
+    // TODO: Implement item shape generation
+    return {}; 
+  }
+  
+  generateItemDetails(itemType, params) { 
+    // TODO: Implement item details generation
+    return {}; 
+  }
+  
+  createItemRenderInstructions(baseShape, details, material, palette) { 
+    // TODO: Implement item rendering instructions
+    return { layers: [] }; 
+  }
 
-  // Environment generation methods (placeholders for now)
-  determineAssetType(params) { return 'tree'; }
-  generateStructure(assetType, isOrganic, params) { return {}; }
-  generateSurfaceDetails(assetType, params) { return {}; }
-  createEnvironmentRenderInstructions(structure, surfaceDetails, material, palette) { return { layers: [] }; }
+  // Environment generation methods (TODO: Implement full environment asset generation)
+  determineAssetType(params) { 
+    // TODO: Implement asset type determination logic
+    return 'tree'; 
+  }
+  
+  generateStructure(assetType, isOrganic, params) { 
+    // TODO: Implement structure generation
+    return {}; 
+  }
+  
+  generateSurfaceDetails(assetType, params) { 
+    // TODO: Implement surface details generation
+    return {}; 
+  }
+  
+  createEnvironmentRenderInstructions(structure, surfaceDetails, material, palette) { 
+    // TODO: Implement environment rendering instructions
+    return { layers: [] }; 
+  }
 }
 
 module.exports = UniversalProceduralGenerator;

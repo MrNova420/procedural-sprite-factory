@@ -120,5 +120,5 @@ echo "======================================================"
 echo "✅ All tests complete!"
 echo ""
 echo "Generated files:"
-ls -lh /tmp/test-*.json | wc -l
+ls /tmp/test-*.json 2>/dev/null | wc -l
 echo "files created in /tmp/"
