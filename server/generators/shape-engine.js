@@ -4,10 +4,13 @@ const DragonRenderer = require('./dragon-renderer');
 const WolfRenderer = require('./wolf-renderer');
 const UniversalProceduralGenerator = require('./universal-procedural-generator');
 const TopDownRenderer = require('./topdown-renderer');
+const UniversalRealityCompiler = require('./universal-reality-compiler');
+const UniversalStyleSpace = require('./universal-style-space');
 
 /**
  * Shape Engine
  * Generates pixel-perfect geometry and skeletal structures
+ * Now powered by Universal Reality Compiler for infinite possibilities
  */
 class ShapeEngine {
   constructor() {
@@ -16,6 +19,7 @@ class ShapeEngine {
     this.wolfRenderer = new WolfRenderer();
     this.universalGenerator = new UniversalProceduralGenerator();
     this.topDownRenderer = new TopDownRenderer();
+    this.realityCompiler = new UniversalRealityCompiler();
   }
 
   /**
@@ -35,6 +39,21 @@ class ShapeEngine {
     // Add colors to DNA if not present
     if (!dna.colors) {
       dna.colors = { primary: primaryColor, secondary: secondaryColor };
+    }
+    
+    // NEW: Check if using Universal Reality Compiler mode
+    if (dna.universal === true || dna.compile === true) {
+      // Use the true universal system - no predefined types
+      const compiledAsset = this.realityCompiler.compile({
+        form: dna.form || {},
+        material: dna.material || {},
+        style: dna.styleCoordinates ? UniversalStyleSpace.generateStyle(dna.styleCoordinates) : 
+               dna.stylePreset ? UniversalStyleSpace.generateStyle(UniversalStyleSpace.getPreset(dna.stylePreset)) : {},
+        color: dna.colorParams || {}
+      });
+      
+      this.realityCompiler.render(ctx, centerX, centerY, size * 0.4, compiledAsset);
+      return;
     }
     
     // Check if using top-down rendering
