@@ -1,0 +1,24 @@
+/* Additional dashboard-specific styles */
+
+.input-panel {
+    height: fit-content;
+}
+
+.preview-panel {
+    display: flex;
+    flex-direction: column;
+}
+
+@media (max-width: 768px) {
+    .header h1 {
+        font-size: 2em;
+    }
+    
+    .subtitle {
+        font-size: 1em;
+    }
+    
+    .export-buttons {
+        grid-template-columns: 1fr;
+    }
+}

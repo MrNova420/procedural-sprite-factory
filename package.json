@@ -1,14 +1,22 @@
 {
   "name": "procedural-sprite-factory",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "An algorithmic 2D asset foundry that generates infinite pixel art sprites using pure mathematics",
+  "main": "server/server.js",
   "scripts": {
+    "start": "node server/server.js",
+    "dev": "node server/server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": [],
+  "keywords": [
+    "procedural",
+    "sprite",
+    "pixel-art",
+    "generation",
+    "game-assets"
+  ],
   "author": "",
-  "license": "ISC",
+  "license": "MIT",
   "type": "commonjs",
   "dependencies": {
     "canvas": "^3.2.0",
