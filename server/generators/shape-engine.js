@@ -35,7 +35,57 @@ class ShapeEngine {
       dna.colors = { primary: primaryColor, secondary: secondaryColor };
     }
     
-    // Check if we should use universal procedural generation
+    // Check if generating items
+    if (dna.generateItem === true || dna.itemType) {
+      const itemData = this.universalGenerator.generateItem({
+        itemType: dna.itemType,
+        itemCategory: dna.itemCategory,
+        seed: dna.seed,
+        material: dna.material,
+        quality: dna.quality,
+        wear: dna.wear,
+        size: dna.size,
+        angle: dna.angle,
+        baseHue: dna.baseHue,
+        harmony: dna.harmony
+      });
+      
+      await this.universalGenerator.renderFromInstructions(
+        ctx,
+        itemData.renderInstructions,
+        centerX,
+        centerY,
+        size * 0.4
+      );
+      return;
+    }
+    
+    // Check if generating environment assets
+    if (dna.generateEnvironment === true || dna.assetType) {
+      const envData = this.universalGenerator.generateEnvironmentAsset({
+        assetType: dna.assetType,
+        assetCategory: dna.assetCategory,
+        seed: dna.seed,
+        material: dna.material,
+        organic: dna.organic,
+        size: dna.size,
+        weathering: dna.weathering,
+        age: dna.age,
+        baseHue: dna.baseHue,
+        harmony: dna.harmony
+      });
+      
+      await this.universalGenerator.renderFromInstructions(
+        ctx,
+        envData.renderInstructions,
+        centerX,
+        centerY,
+        size * 0.4
+      );
+      return;
+    }
+    
+    // Check if we should use universal procedural generation for creatures
     if (dna.procedural === true || dna.archetype) {
       // Use universal procedural generator for AAA quality on-the-spot generation
       const generatedData = this.universalGenerator.generateCreature({
