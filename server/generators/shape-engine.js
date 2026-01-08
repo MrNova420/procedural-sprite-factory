@@ -2,6 +2,7 @@ const Skeleton = require('./skeleton');
 const MathUtils = require('../utils/math');
 const DragonRenderer = require('./dragon-renderer');
 const WolfRenderer = require('./wolf-renderer');
+const UniversalProceduralGenerator = require('./universal-procedural-generator');
 
 /**
  * Shape Engine
@@ -12,6 +13,7 @@ class ShapeEngine {
     this.skeletonCache = new Map();
     this.dragonRenderer = new DragonRenderer();
     this.wolfRenderer = new WolfRenderer();
+    this.universalGenerator = new UniversalProceduralGenerator();
   }
 
   /**
@@ -31,6 +33,34 @@ class ShapeEngine {
     // Add colors to DNA if not present
     if (!dna.colors) {
       dna.colors = { primary: primaryColor, secondary: secondaryColor };
+    }
+    
+    // Check if we should use universal procedural generation
+    if (dna.procedural === true || dna.archetype) {
+      // Use universal procedural generator for AAA quality on-the-spot generation
+      const generatedData = this.universalGenerator.generateCreature({
+        archetype: dna.archetype,
+        seed: dna.seed,
+        material: dna.material,
+        organic: dna.organic,
+        muscleDefinition: dna.muscleDefinition,
+        baseHue: dna.baseHue,
+        harmony: dna.harmony,
+        flying: dna.flying,
+        aquatic: dna.aquatic,
+        spider: dna.spider,
+        magical: dna.magical,
+        eyeCount: dna.eyeCount
+      });
+      
+      await this.universalGenerator.renderFromInstructions(
+        ctx, 
+        generatedData.renderInstructions,
+        centerX,
+        centerY,
+        size * 0.4
+      );
+      return;
     }
     
     // Determine body type for skeletal system
