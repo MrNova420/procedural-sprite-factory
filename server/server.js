@@ -13,6 +13,7 @@ const exportRoutes = require('./routes/export');
 const dnaRoutes = require('./routes/dna');
 const assetsRoutes = require('./routes/assets');
 const universalRoutes = require('./routes/universal');
+const itemsRoutes = require('./routes/items');
 
 // API Routes
 app.use('/api/generate', generateRoutes);
@@ -20,6 +21,7 @@ app.use('/api/export', exportRoutes);
 app.use('/api/dna', dnaRoutes);
 app.use('/api/assets', assetsRoutes);
 app.use('/api/universal', universalRoutes);
+app.use('/api/items', itemsRoutes);
 
 // Serve the main dashboard
 app.get('/', (req, res) => {
@@ -43,11 +45,12 @@ app.listen(PORT, () => {
   console.log('  POST /api/dna/* - DNA operations');
   console.log('  POST /api/assets/* - Game asset generation');
   console.log('  POST /api/universal/* - Text-to-asset & variations');
+  console.log('  POST /api/items/* - Item generation (weapons, armor, consumables)');
   console.log('  GET  /api/export/png/:id - Export PNG');
   console.log('');
-  console.log('🚀 NEW: Text-to-Asset Generation!');
-  console.log('  Try: POST /api/universal/from-text');
-  console.log('  Body: { "prompt": "A fierce red dragon" }');
+  console.log('🚀 NEW: Item Generation System!');
+  console.log('  Try: POST /api/items/weapon');
+  console.log('  Body: { "weaponType": "sword", "quality": "legendary" }');
 });
 
 module.exports = app;
