@@ -12,12 +12,14 @@ const generateRoutes = require('./routes/generate');
 const exportRoutes = require('./routes/export');
 const dnaRoutes = require('./routes/dna');
 const assetsRoutes = require('./routes/assets');
+const universalRoutes = require('./routes/universal');
 
 // API Routes
 app.use('/api/generate', generateRoutes);
 app.use('/api/export', exportRoutes);
 app.use('/api/dna', dnaRoutes);
 app.use('/api/assets', assetsRoutes);
+app.use('/api/universal', universalRoutes);
 
 // Serve the main dashboard
 app.get('/', (req, res) => {
@@ -40,7 +42,12 @@ app.listen(PORT, () => {
   console.log('  POST /api/generate - Generate sprite');
   console.log('  POST /api/dna/* - DNA operations');
   console.log('  POST /api/assets/* - Game asset generation');
+  console.log('  POST /api/universal/* - Text-to-asset & variations');
   console.log('  GET  /api/export/png/:id - Export PNG');
+  console.log('');
+  console.log('🚀 NEW: Text-to-Asset Generation!');
+  console.log('  Try: POST /api/universal/from-text');
+  console.log('  Body: { "prompt": "A fierce red dragon" }');
 });
 
 module.exports = app;
