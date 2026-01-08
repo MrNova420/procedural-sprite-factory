@@ -3,11 +3,12 @@
  * Generates overworld maps and dungeons with biomes, rooms, and object placement
  */
 
+const { createNoise2D } = require('simplex-noise');
 const MathUtils = require('../utils/math');
 
 class WorldGenerator {
   constructor() {
-    this.noise = new MathUtils.SimplexNoise();
+    this.noise = createNoise2D();
   }
 
   /**
