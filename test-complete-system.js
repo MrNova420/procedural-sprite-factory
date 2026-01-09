@@ -21,7 +21,7 @@ const QualityPresets = require('./server/generators/quality-presets');
 const AutoTiler = require('./server/generators/auto-tiler');
 
 console.log('🚀 Universal 2D Reality Compiler - Complete System Test\n');
-console.log('=' .repeat(80));
+console.log('='.repeat(80));
 
 const results = {
   passed: 0,

@@ -11,7 +11,7 @@ const path = require('path');
 const { spawn } = require('child_process');
 
 console.log('🚀 Universal 2D Reality Compiler - Production Verification\n');
-console.log('=' .repeat(80));
+console.log('='.repeat(80));
 
 const PORT = 3000;
 const BASE_URL = `http://localhost:${PORT}`;
@@ -74,8 +74,9 @@ function makeRequest(endpoint, method = 'GET', body = null) {
       });
       
       res.on('end', () => {
+        const isJson = res.headers['content-type'] && res.headers['content-type'].includes('application/json');
         try {
-          if (res.headers['content-type']?.includes('application/json')) {
+          if (isJson) {
             resolve({ status: res.statusCode, data: JSON.parse(data), raw: data });
           } else {
             resolve({ status: res.statusCode, data: data, raw: data });
