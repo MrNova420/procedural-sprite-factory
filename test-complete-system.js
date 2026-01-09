@@ -323,7 +323,6 @@ test('Auto-Tiler System - Seamless Terrain', () => {
 test('Professional Dragon Renderer - 100+ Scales', () => {
   const shapeEngine = new ShapeEngine();
   const canvas = createCanvas(128, 128);
-  const ctx = canvas.getContext('2d');
   
   const params = {
     species: 'dragon',
@@ -337,14 +336,13 @@ test('Professional Dragon Renderer - 100+ Scales', () => {
   fs.writeFileSync(path.join(outputDir, 'test9-professional-dragon.png'), buffer);
   console.log('   Generated: test9-professional-dragon.png');
   
-  return result !== null;
+  return result !== null && result !== undefined;
 });
 
 // Test 10: Complete Integrated Generation
 test('Complete Integrated System - AAA Quality Output', () => {
   const shapeEngine = new ShapeEngine();
   const canvas = createCanvas(256, 256);
-  const ctx = canvas.getContext('2d');
   
   const params = {
     universal: true,
@@ -395,7 +393,7 @@ test('Complete Integrated System - AAA Quality Output', () => {
   fs.writeFileSync(path.join(outputDir, 'test10-aaa-integrated.png'), buffer);
   console.log('   Generated: test10-aaa-integrated.png');
   
-  return result !== null;
+  return result !== null && result !== undefined;
 });
 
 console.log('\n' + '='.repeat(80));

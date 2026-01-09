@@ -6,8 +6,6 @@
  */
 
 const http = require('http');
-const fs = require('fs');
-const path = require('path');
 const { spawn } = require('child_process');
 
 console.log('🚀 Universal 2D Reality Compiler - Production Verification\n');

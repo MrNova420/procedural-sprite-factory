@@ -179,7 +179,6 @@ class InverseKinematicsSystem {
     
     const joint = joints[index];
     const prevJoint = joints[index - 1];
-    const nextJoint = joints[index - 1]; // Parent
     
     if (index >= 2) {
       // Calculate angle relative to parent bone

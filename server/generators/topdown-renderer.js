@@ -55,7 +55,7 @@ class TopDownRenderer extends AdvancedRenderer {
    * Render item from top-down view
    */
   renderTopDownItem(ctx, x, y, scale, itemData) {
-    const { itemType, quality, palette, shape } = itemData;
+    const { itemType, quality, palette } = itemData;
     
     // Shadow
     this.renderTopDownShadow(ctx, x, y, scale * 0.6, scale * 0.4);
@@ -188,7 +188,7 @@ class TopDownRenderer extends AdvancedRenderer {
    * Render environment from top-down view
    */
   renderTopDownEnvironment(ctx, x, y, scale, envData) {
-    const { assetType, structure, palette, material } = envData;
+    const { assetType, structure, palette } = envData;
     
     if (assetType === 'tree') {
       // Tree from top (circular canopy)

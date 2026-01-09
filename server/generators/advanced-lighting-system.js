@@ -34,14 +34,8 @@ class AdvancedLightingSystem {
    * Calculate lighting for a point on surface
    */
   calculateLighting(point, normal, materialProperties) {
-    const { x, y, z } = point;
-    const { nx, ny, nz } = normal;
     const {
-      baseColor = { r: 1, g: 1, b: 1 },
-      roughness = 0.5,
-      metallic = 0.0,
-      reflectivity = 0.5,
-      subsurfaceScattering = 0.0
+      baseColor = { r: 1, g: 1, b: 1 }
     } = materialProperties;
 
     // Start with ambient
@@ -196,13 +190,6 @@ class AdvancedLightingSystem {
     for (let i = 0; i < samples; i++) {
       const theta = Math.random() * Math.PI * 2;
       const phi = Math.acos(Math.random());
-      
-      // Hemisphere sampling aligned to normal
-      const sampleDir = {
-        x: Math.sin(phi) * Math.cos(theta),
-        y: Math.sin(phi) * Math.sin(theta),
-        z: Math.cos(phi)
-      };
       
       // Simple occlusion check (would be more complex in full implementation)
       const occlusion = 1.0 - (Math.random() * 0.3); // Simplified
