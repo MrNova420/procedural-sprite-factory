@@ -1,13 +1,25 @@
 const Skeleton = require('./skeleton');
 const MathUtils = require('../utils/math');
+const DragonRenderer = require('./dragon-renderer');
+const WolfRenderer = require('./wolf-renderer');
+const UniversalProceduralGenerator = require('./universal-procedural-generator');
+const TopDownRenderer = require('./topdown-renderer');
+const UniversalRealityCompiler = require('./universal-reality-compiler');
+const UniversalStyleSpace = require('./universal-style-space');
 
 /**
  * Shape Engine
  * Generates pixel-perfect geometry and skeletal structures
+ * Now powered by Universal Reality Compiler for infinite possibilities
  */
 class ShapeEngine {
   constructor() {
     this.skeletonCache = new Map();
+    this.dragonRenderer = new DragonRenderer();
+    this.wolfRenderer = new WolfRenderer();
+    this.universalGenerator = new UniversalProceduralGenerator();
+    this.topDownRenderer = new TopDownRenderer();
+    this.realityCompiler = new UniversalRealityCompiler();
   }
 
   /**
@@ -24,21 +36,160 @@ class ShapeEngine {
     const primaryColor = dna.colors?.primary || this.getSpeciesColor(dna.species);
     const secondaryColor = dna.colors?.secondary || this.lightenColor(primaryColor, 0.3);
     
+    // Add colors to DNA if not present
+    if (!dna.colors) {
+      dna.colors = { primary: primaryColor, secondary: secondaryColor };
+    }
+    
+    // NEW: Check if using Universal Reality Compiler mode
+    if (dna.universal === true || dna.compile === true) {
+      // Use the true universal system - no predefined types
+      const compiledAsset = this.realityCompiler.compile({
+        form: dna.form || {},
+        material: dna.material || {},
+        style: dna.styleCoordinates ? UniversalStyleSpace.generateStyle(dna.styleCoordinates) : 
+               dna.stylePreset ? UniversalStyleSpace.generateStyle(UniversalStyleSpace.getPreset(dna.stylePreset)) : {},
+        color: dna.colorParams || {}
+      });
+      
+      this.realityCompiler.render(ctx, centerX, centerY, size * 0.4, compiledAsset);
+      return;
+    }
+    
+    // Check if using top-down rendering
+    if (dna.topDown === true || dna.perspective === 'topdown') {
+      const palette = this.generatePaletteFromDNA(dna);
+      
+      if (dna.generateItem || dna.itemType) {
+        const itemData = this.universalGenerator.generateItem({
+          itemType: dna.itemType,
+          itemCategory: dna.itemCategory,
+          seed: dna.seed,
+          quality: dna.quality,
+          baseHue: dna.baseHue
+        });
+        this.topDownRenderer.renderTopDownItem(ctx, centerX, centerY, size * 0.4, itemData);
+      } else if (dna.generateEnvironment || dna.assetType) {
+        const envData = this.universalGenerator.generateEnvironmentAsset({
+          assetType: dna.assetType,
+          assetCategory: dna.assetCategory,
+          seed: dna.seed,
+          baseHue: dna.baseHue
+        });
+        this.topDownRenderer.renderTopDownEnvironment(ctx, centerX, centerY, size * 0.4, envData);
+      } else {
+        // Top-down character
+        const params = {
+          archetype: dna.archetype || 'biped',
+          material: dna.material || 'flesh',
+          palette,
+          features: this.universalGenerator.generateFeatures({seed: dna.seed}),
+          showUI: dna.showUI,
+          selected: dna.selected,
+          showHealth: dna.showHealth,
+          health: dna.health
+        };
+        this.topDownRenderer.renderTopDownCharacter(ctx, centerX, centerY, size * 0.4, params);
+      }
+      return;
+    }
+    
+    // Check if generating items
+    if (dna.generateItem === true || dna.itemType) {
+      const itemData = this.universalGenerator.generateItem({
+        itemType: dna.itemType,
+        itemCategory: dna.itemCategory,
+        seed: dna.seed,
+        material: dna.material,
+        quality: dna.quality,
+        wear: dna.wear,
+        size: dna.size,
+        angle: dna.angle,
+        baseHue: dna.baseHue,
+        harmony: dna.harmony
+      });
+      
+      await this.universalGenerator.renderFromInstructions(
+        ctx,
+        itemData.renderInstructions,
+        centerX,
+        centerY,
+        size * 0.4
+      );
+      return;
+    }
+    
+    // Check if generating environment assets
+    if (dna.generateEnvironment === true || dna.assetType) {
+      const envData = this.universalGenerator.generateEnvironmentAsset({
+        assetType: dna.assetType,
+        assetCategory: dna.assetCategory,
+        seed: dna.seed,
+        material: dna.material,
+        organic: dna.organic,
+        size: dna.size,
+        weathering: dna.weathering,
+        age: dna.age,
+        baseHue: dna.baseHue,
+        harmony: dna.harmony
+      });
+      
+      await this.universalGenerator.renderFromInstructions(
+        ctx,
+        envData.renderInstructions,
+        centerX,
+        centerY,
+        size * 0.4
+      );
+      return;
+    }
+    
+    // Check if we should use universal procedural generation for creatures
+    if (dna.procedural === true || dna.archetype) {
+      // Use universal procedural generator for AAA quality on-the-spot generation
+      const generatedData = this.universalGenerator.generateCreature({
+        archetype: dna.archetype,
+        seed: dna.seed,
+        material: dna.material,
+        organic: dna.organic,
+        muscleDefinition: dna.muscleDefinition,
+        baseHue: dna.baseHue,
+        harmony: dna.harmony,
+        flying: dna.flying,
+        aquatic: dna.aquatic,
+        spider: dna.spider,
+        magical: dna.magical,
+        eyeCount: dna.eyeCount
+      });
+      
+      await this.universalGenerator.renderFromInstructions(
+        ctx, 
+        generatedData.renderInstructions,
+        centerX,
+        centerY,
+        size * 0.4
+      );
+      return;
+    }
+    
     // Determine body type for skeletal system
     const bodyType = this.getBodyType(dna.species);
+    
+    // Use professional renderers for dragon and wolf
+    if (dna.species === 'dragon') {
+      await this.dragonRenderer.renderDragon(ctx, centerX, centerY, size * 0.4, dna);
+      return;
+    } else if (dna.species === 'wolf') {
+      await this.wolfRenderer.renderWolf(ctx, centerX, centerY, size * 0.35, dna);
+      return;
+    }
     
     // Phase 2: Use skeletal system for more advanced creatures
     if (this.usesSkeletalSystem(dna.species)) {
       await this.drawSkeletalCreature(ctx, dna, centerX, centerY, size * 0.4, primaryColor, secondaryColor, bodyType);
     } else {
-      // Fallback to basic shapes
+      // Fallback to basic shapes for other species
       switch (dna.species) {
-        case 'dragon':
-          await this.drawDragonBasic(ctx, centerX, centerY, size * 0.4, primaryColor, secondaryColor);
-          break;
-        case 'wolf':
-          await this.drawWolfBasic(ctx, centerX, centerY, size * 0.35, primaryColor, secondaryColor);
-          break;
         case 'goblin':
           await this.drawGoblinBasic(ctx, centerX, centerY, size * 0.3, primaryColor, secondaryColor);
           break;
@@ -1137,6 +1288,48 @@ class ShapeEngine {
     };
     
     return colors[species] || '#4169E1'; // Default blue
+  }
+
+  /**
+   * Generate color palette from DNA
+   */
+  generatePaletteFromDNA(dna) {
+    const baseHue = dna.baseHue !== undefined ? dna.baseHue : 0;
+    const primary = this.hslToHex(baseHue, 70, 50);
+    const secondary = this.hslToHex((baseHue + 30) % 360, 70, 60);
+    const accent = this.hslToHex((baseHue + 180) % 360, 80, 55);
+    const shadow = this.hslToHex(baseHue, 30, 20);
+    const highlight = this.hslToHex(baseHue, 50, 80);
+    
+    return { primary, secondary, accent, shadow, highlight };
+  }
+
+  /**
+   * HSL to Hex conversion
+   */
+  hslToHex(h, s, l) {
+    s /= 100;
+    l /= 100;
+    
+    const c = (1 - Math.abs(2 * l - 1)) * s;
+    const x = c * (1 - Math.abs((h / 60) % 2 - 1));
+    const m = l - c / 2;
+    
+    let r = 0, g = 0, b = 0;
+    
+    if (h < 60) { r = c; g = x; b = 0; }
+    else if (h < 120) { r = x; g = c; b = 0; }
+    else if (h < 180) { r = 0; g = c; b = x; }
+    else if (h < 240) { r = 0; g = x; b = c; }
+    else if (h < 300) { r = x; g = 0; b = c; }
+    else { r = c; g = 0; b = x; }
+    
+    const toHex = (n) => {
+      const hex = Math.round((n + m) * 255).toString(16);
+      return hex.length === 1 ? '0' + hex : hex;
+    };
+    
+    return `#${toHex(r)}${toHex(g)}${toHex(b)}`;
   }
 
   /**

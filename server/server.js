@@ -45,6 +45,7 @@ const uiRoutes = require('./routes/ui');
 const animationsRoutes = require('./routes/animations');
 const effectsRoutes = require('./routes/effects');
 const worldRoutes = require('./routes/world');
+const advancedRoutes = require('./routes/advanced');
 
 // API Routes
 app.use('/api/generate', generateRoutes);
@@ -57,6 +58,7 @@ app.use('/api/ui', uiRoutes);
 app.use('/api/animations', animationsRoutes);
 app.use('/api/effects', effectsRoutes);
 app.use('/api/world', worldRoutes);
+app.use('/api/advanced', advancedRoutes);
 
 // Serve the main dashboard
 app.get('/', (req, res) => {

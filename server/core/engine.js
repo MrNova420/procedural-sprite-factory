@@ -2,6 +2,7 @@ const CanvasManager = require('./canvas-manager');
 const ShapeEngine = require('../generators/shape-engine');
 const TextureBrain = require('../generators/texture-brain');
 const DNAGenerator = require('../generators/dna-generator');
+const PixelArtRenderer = require('../generators/pixel-art-renderer');
 const { generateId } = require('../utils/helpers');
 
 /**
@@ -14,6 +15,7 @@ class Engine {
     this.shapeEngine = new ShapeEngine();
     this.textureBrain = new TextureBrain();
     this.dnaGenerator = new DNAGenerator();
+    this.pixelArtRenderer = new PixelArtRenderer();
     this.cache = new Map(); // Store generated sprites
   }
 
@@ -64,7 +66,10 @@ class Engine {
       
       // PHASE 3: Apply style effects
       const style = dna.style || 'pixel';
-      if (style && style !== 'pixel') {
+      if (style === 'pixel') {
+        // Apply pixel art style for crisp pixelated look
+        this.pixelArtRenderer.applyPixelArtStyle(ctx, size);
+      } else if (style && style !== 'pixel') {
         await this.applyStyleEffects(ctx, style);
       }
       

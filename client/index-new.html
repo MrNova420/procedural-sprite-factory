@@ -1,0 +1,781 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎨 Procedural Sprite Factory - AAA Quality Asset Generator</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #fff;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            padding: 30px 0;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 15px;
+            margin-bottom: 30px;
+        }
+
+        h1 {
+            font-size: 3em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        .subtitle {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            background: rgba(0, 0, 0, 0.2);
+            padding: 15px;
+            border-radius: 10px;
+        }
+
+        .tab-btn {
+            padding: 12px 24px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 8px;
+            color: #fff;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+
+        .tab-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .tab-btn.active {
+            background: rgba(255, 255, 255, 0.3);
+            border-color: #fff;
+        }
+
+        .tab-content {
+            display: none;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 30px;
+            border-radius: 15px;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .generator-grid {
+            display: grid;
+            grid-template-columns: 350px 1fr;
+            gap: 30px;
+        }
+
+        .controls {
+            background: rgba(0, 0, 0, 0.4);
+            padding: 25px;
+            border-radius: 10px;
+            height: fit-content;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 5px;
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            font-size: 14px;
+        }
+
+        input[type="range"] {
+            padding: 0;
+        }
+
+        input[type="color"] {
+            height: 50px;
+            cursor: pointer;
+        }
+
+        button {
+            padding: 12px 24px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            border-radius: 8px;
+            color: #fff;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .preview-area {
+            background: rgba(0, 0, 0, 0.4);
+            padding: 30px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .sprite-preview {
+            background: rgba(255, 255, 255, 0.1);
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            min-height: 300px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .sprite-preview img {
+            max-width: 100%;
+            image-rendering: pixelated;
+            image-rendering: -moz-crisp-edges;
+            image-rendering: crisp-edges;
+        }
+
+        .quick-actions {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .quick-btn {
+            padding: 10px;
+            font-size: 14px;
+            margin: 0;
+        }
+
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .gallery-item {
+            background: rgba(0, 0, 0, 0.4);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            padding: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .gallery-item:hover {
+            transform: scale(1.05);
+            border-color: #fff;
+        }
+
+        .gallery-item img {
+            width: 100%;
+            image-rendering: pixelated;
+        }
+
+        .info-box {
+            background: rgba(0, 0, 0, 0.4);
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+            font-size: 14px;
+        }
+
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .stat-card {
+            background: rgba(0, 0, 0, 0.4);
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 2em;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            font-size: 0.9em;
+            opacity: 0.8;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎨 Procedural Sprite Factory</h1>
+            <p class="subtitle">AAA Quality Asset Generation - Generate ANYTHING for Your Game!</p>
+        </header>
+
+        <div class="tabs">
+            <button class="tab-btn active" data-tab="creatures">🐉 Creatures</button>
+            <button class="tab-btn" data-tab="universal">✨ Universal</button>
+            <button class="tab-btn" data-tab="items">⚔️ Items & Weapons</button>
+            <button class="tab-btn" data-tab="environment">🌳 Environment</button>
+            <button class="tab-btn" data-tab="topdown">🎮 Top-Down</button>
+            <button class="tab-btn" data-tab="batch">📦 Batch Generate</button>
+            <button class="tab-btn" data-tab="gallery">🖼️ Gallery</button>
+        </div>
+
+        <!-- CREATURES TAB -->
+        <div id="creatures-tab" class="tab-content active">
+            <div class="generator-grid">
+                <div class="controls">
+                    <h2>Creature Generator</h2>
+                    
+                    <div class="form-group">
+                        <label>Generation Mode</label>
+                        <select id="creature-mode">
+                            <option value="species">Species (Dragon/Wolf)</option>
+                            <option value="procedural">Procedural (Any Creature)</option>
+                        </select>
+                    </div>
+
+                    <div id="species-controls">
+                        <div class="form-group">
+                            <label>Species</label>
+                            <select id="species">
+                                <option value="dragon">Dragon</option>
+                                <option value="wolf">Wolf</option>
+                                <option value="goblin">Goblin</option>
+                                <option value="robot">Robot</option>
+                                <option value="human">Human</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div id="procedural-controls" style="display: none;">
+                        <div class="form-group">
+                            <label>Archetype</label>
+                            <select id="archetype">
+                                <option value="biped">Biped (Humanoid)</option>
+                                <option value="quadruped">Quadruped (Beast)</option>
+                                <option value="flying">Flying (Winged)</option>
+                                <option value="serpentine">Serpentine (Snake)</option>
+                                <option value="spider">Spider (8 legs)</option>
+                                <option value="floating">Floating (Ghost)</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Material</label>
+                            <select id="material">
+                                <option value="flesh">Flesh</option>
+                                <option value="fur">Fur (50+ strands)</option>
+                                <option value="scales">Scales (100+ individual)</option>
+                                <option value="feathers">Feathers</option>
+                                <option value="metal">Metal</option>
+                                <option value="crystal">Crystal</option>
+                                <option value="energy">Energy</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Eye Count: <span id="eye-count-value">2</span></label>
+                            <input type="range" id="eye-count" min="1" max="8" value="2">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Color (Hue): <span id="hue-value">0° (Red)</span></label>
+                        <input type="range" id="base-hue" min="0" max="360" value="0">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Color Harmony</label>
+                        <select id="harmony">
+                            <option value="monochromatic">Monochromatic</option>
+                            <option value="complementary">Complementary</option>
+                            <option value="triadic">Triadic</option>
+                            <option value="analogous">Analogous</option>
+                            <option value="split-complementary">Split Complementary</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Size: <span id="size-value">2x</span></label>
+                        <input type="range" id="size" min="1" max="3" step="0.5" value="2">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Style</label>
+                        <select id="style">
+                            <option value="pixel">Pixel Art</option>
+                            <option value="dark-fantasy">Dark Fantasy</option>
+                            <option value="cyberpunk">Cyberpunk</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Seed (for reproducibility)</label>
+                        <input type="number" id="seed" value="12345">
+                    </div>
+
+                    <button id="generate-creature">Generate Creature</button>
+                    <button id="random-creature" class="quick-btn">Random</button>
+                </div>
+
+                <div class="preview-area">
+                    <h2>Preview</h2>
+                    <div class="sprite-preview" id="creature-preview">
+                        <p>Click Generate to create a creature</p>
+                    </div>
+                    <div class="quick-actions">
+                        <button class="quick-btn" id="download-creature">💾 Download</button>
+                        <button class="quick-btn" id="add-to-gallery-creature">🖼️ Add to Gallery</button>
+                        <button class="quick-btn" id="copy-dna-creature">📋 Copy DNA</button>
+                    </div>
+                    <div class="info-box" id="creature-info"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- UNIVERSAL TAB -->
+        <div id="universal-tab" class="tab-content">
+            <div class="generator-grid">
+                <div class="controls">
+                    <h2>✨ Universal Reality Compiler</h2>
+                    <p style="font-size: 0.9em; opacity: 0.8; margin-bottom: 15px;">Generate ANYTHING through mathematical description. True infinity.</p>
+                    
+                    <h3 style="margin-top: 20px; margin-bottom: 10px;">Form Space</h3>
+                    
+                    <div class="form-group">
+                        <label>Topology</label>
+                        <select id="univ-topology">
+                            <option value="biped">Biped (humanoid)</option>
+                            <option value="quadruped">Quadruped (four-legged)</option>
+                            <option value="octopod">Octopod (8 limbs)</option>
+                            <option value="serpentine">Serpentine (snake-like)</option>
+                            <option value="radial">Radial (star/flower)</option>
+                            <option value="fractal">Fractal (recursive)</option>
+                            <option value="blob">Blob (amorphous)</option>
+                            <option value="network">Network (connected nodes)</option>
+                            <option value="spiral">Spiral</option>
+                            <option value="crystalline">Crystalline</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Symmetry Type</label>
+                        <select id="univ-symmetry">
+                            <option value="radial">Radial</option>
+                            <option value="mirror">Mirror</option>
+                            <option value="bilateral">Bilateral</option>
+                            <option value="none">Asymmetric</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Complexity: <span id="univ-complexity-value">0.5</span></label>
+                        <input type="range" id="univ-complexity" min="0" max="1" step="0.01" value="0.5">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Organic: <span id="univ-organic-value">0.5</span></label>
+                        <input type="range" id="univ-organic" min="0" max="1" step="0.01" value="0.5">
+                        <small>0=mechanical, 1=organic</small>
+                    </div>
+
+                    <h3 style="margin-top: 20px; margin-bottom: 10px;">Material Space</h3>
+
+                    <div class="form-group">
+                        <label>Roughness: <span id="univ-roughness-value">0.3</span></label>
+                        <input type="range" id="univ-roughness" min="0" max="1" step="0.01" value="0.3">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Reflectivity: <span id="univ-reflectivity-value">0.5</span></label>
+                        <input type="range" id="univ-reflectivity" min="0" max="1" step="0.01" value="0.5">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Translucency: <span id="univ-translucency-value">0.0</span></label>
+                        <input type="range" id="univ-translucency" min="0" max="1" step="0.01" value="0.0">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Iridescence: <span id="univ-iridescence-value">0.0</span></label>
+                        <input type="range" id="univ-iridescence" min="0" max="1" step="0.01" value="0.0">
+                        <small>Rainbow shimmer effect</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Fluorescence: <span id="univ-fluorescence-value">0.0</span></label>
+                        <input type="range" id="univ-fluorescence" min="0" max="1" step="0.01" value="0.0">
+                        <small>Glow intensity</small>
+                    </div>
+
+                    <h3 style="margin-top: 20px; margin-bottom: 10px;">Style Space (8D)</h3>
+
+                    <div class="form-group">
+                        <label>Aesthetic: <span id="univ-aesthetic-value">0.5</span></label>
+                        <input type="range" id="univ-aesthetic" min="0" max="1" step="0.01" value="0.5">
+                        <small>0=dark/gritty, 1=bright/cute</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Line Weight: <span id="univ-line-value">0.5</span></label>
+                        <input type="range" id="univ-line" min="0" max="1" step="0.01" value="0.5">
+                        <small>0=no outlines, 1=heavy</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Color Saturation: <span id="univ-color-value">0.8</span></label>
+                        <input type="range" id="univ-color" min="0" max="1" step="0.01" value="0.8">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Shading: <span id="univ-shading-value">0.6</span></label>
+                        <input type="range" id="univ-shading" min="0" max="1" step="0.01" value="0.6">
+                        <small>0=flat, 1=complex gradients</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Detail: <span id="univ-detail-value">0.7</span></label>
+                        <input type="range" id="univ-detail" min="0" max="1" step="0.01" value="0.7">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Effects: <span id="univ-effects-value">0.3</span></label>
+                        <input type="range" id="univ-effects" min="0" max="1" step="0.01" value="0.3">
+                        <small>Glows, particles, FX</small>
+                    </div>
+
+                    <h3 style="margin-top: 20px; margin-bottom: 10px;">Color Space</h3>
+
+                    <div class="form-group">
+                        <label>Base Hue: <span id="univ-hue-value">180°</span></label>
+                        <input type="range" id="univ-hue" min="0" max="360" value="180">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Harmony</label>
+                        <select id="univ-harmony">
+                            <option value="monochromatic">Monochromatic</option>
+                            <option value="complementary">Complementary</option>
+                            <option value="triadic">Triadic</option>
+                            <option value="analogous">Analogous</option>
+                            <option value="split-complementary">Split Complementary</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Seed</label>
+                        <input type="number" id="univ-seed" value="42">
+                        <button class="generate-btn" style="margin-top: 5px; padding: 8px;" onclick="document.getElementById('univ-seed').value = Math.floor(Math.random() * 1000000)">🎲 Random</button>
+                    </div>
+
+                    <button class="generate-btn" id="generate-universal">✨ Generate Universal</button>
+
+                    <div class="info-box" style="margin-top: 15px; font-size: 0.85em;">
+                        <strong>✨ True Infinity</strong><br>
+                        This system generates forms that never existed through pure mathematics.<br><br>
+                        <strong>Examples:</strong><br>
+                        • Crystal spider with glowing veins<br>
+                        • Liquid metal blob<br>
+                        • Bio-mechanical hybrid<br>
+                        • Energy beings<br>
+                        • Impossible materials
+                    </div>
+                </div>
+
+                <div class="preview-area">
+                    <h2>Preview</h2>
+                    <div class="sprite-preview" id="universal-preview">
+                        <p>Configure parameters and click Generate</p>
+                    </div>
+                    <div class="quick-actions">
+                        <button class="quick-btn" id="download-universal">💾 Download</button>
+                        <button class="quick-btn" id="add-to-gallery-universal">🖼️ Add to Gallery</button>
+                        <button class="quick-btn" id="copy-params-universal">📋 Copy Parameters</button>
+                    </div>
+                    <div class="info-box" id="universal-info"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ITEMS TAB -->
+        <div id="items-tab" class="tab-content">
+            <div class="generator-grid">
+                <div class="controls">
+                    <h2>Item Generator</h2>
+                    
+                    <div class="form-group">
+                        <label>Item Category</label>
+                        <select id="item-category">
+                            <option value="weapon">Weapons</option>
+                            <option value="armor">Armor</option>
+                            <option value="potion">Potions</option>
+                            <option value="gem">Gems</option>
+                            <option value="tool">Tools</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Item Type</label>
+                        <select id="item-type">
+                            <!-- Populated dynamically -->
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Quality</label>
+                        <select id="quality">
+                            <option value="common">Common</option>
+                            <option value="uncommon">Uncommon</option>
+                            <option value="rare">Rare</option>
+                            <option value="epic">Epic</option>
+                            <option value="legendary">Legendary (Max Glow)</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Color (Hue): <span id="item-hue-value">0°</span></label>
+                        <input type="range" id="item-hue" min="0" max="360" value="0">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Seed</label>
+                        <input type="number" id="item-seed" value="1001">
+                    </div>
+
+                    <button id="generate-item">Generate Item</button>
+                    <button id="random-item" class="quick-btn">Random</button>
+                </div>
+
+                <div class="preview-area">
+                    <h2>Preview</h2>
+                    <div class="sprite-preview" id="item-preview">
+                        <p>Click Generate to create an item</p>
+                    </div>
+                    <div class="quick-actions">
+                        <button class="quick-btn" id="download-item">💾 Download</button>
+                        <button class="quick-btn" id="add-to-gallery-item">🖼️ Add to Gallery</button>
+                        <button class="quick-btn" id="generate-loot">🎲 Random Loot</button>
+                    </div>
+                    <div class="info-box" id="item-info"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ENVIRONMENT TAB -->
+        <div id="environment-tab" class="tab-content">
+            <div class="generator-grid">
+                <div class="controls">
+                    <h2>Environment Generator</h2>
+                    
+                    <div class="form-group">
+                        <label>Asset Category</label>
+                        <select id="env-category">
+                            <option value="nature">Nature</option>
+                            <option value="terrain">Terrain</option>
+                            <option value="structure">Structures</option>
+                            <option value="water">Water Features</option>
+                            <option value="decoration">Decorations</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Asset Type</label>
+                        <select id="env-type">
+                            <!-- Populated dynamically -->
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Material</label>
+                        <select id="env-material">
+                            <option value="wood">Wood</option>
+                            <option value="stone">Stone</option>
+                            <option value="crystal">Crystal</option>
+                            <option value="metal">Metal</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Weathering: <span id="weathering-value">0%</span></label>
+                        <input type="range" id="weathering" min="0" max="1" step="0.1" value="0">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Color (Hue): <span id="env-hue-value">120° (Green)</span></label>
+                        <input type="range" id="env-hue" min="0" max="360" value="120">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Seed</label>
+                        <input type="number" id="env-seed" value="5001">
+                    </div>
+
+                    <button id="generate-env">Generate Environment</button>
+                    <button id="random-env" class="quick-btn">Random</button>
+                </div>
+
+                <div class="preview-area">
+                    <h2>Preview</h2>
+                    <div class="sprite-preview" id="env-preview">
+                        <p>Click Generate to create an environment asset</p>
+                    </div>
+                    <div class="quick-actions">
+                        <button class="quick-btn" id="download-env">💾 Download</button>
+                        <button class="quick-btn" id="add-to-gallery-env">🖼️ Add to Gallery</button>
+                        <button class="quick-btn" id="generate-forest">🌲 Generate Forest</button>
+                    </div>
+                    <div class="info-box" id="env-info"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TOP-DOWN TAB -->
+        <div id="topdown-tab" class="tab-content">
+            <div class="generator-grid">
+                <div class="controls">
+                    <h2>Top-Down Renderer</h2>
+                    <p style="margin-bottom: 15px; opacity: 0.8;">Generate assets with top-down perspective for 2D games</p>
+                    
+                    <div class="form-group">
+                        <label>Asset Type</label>
+                        <select id="topdown-type">
+                            <option value="character">Character</option>
+                            <option value="item">Item</option>
+                            <option value="environment">Environment</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label><input type="checkbox" id="show-shadow"> Show Shadow</label>
+                    </div>
+
+                    <div class="form-group">
+                        <label><input type="checkbox" id="show-selection"> Show Selection Circle</label>
+                    </div>
+
+                    <div class="form-group">
+                        <label><input type="checkbox" id="show-healthbar"> Show Health Bar</label>
+                    </div>
+
+                    <button id="generate-topdown">Generate Top-Down</button>
+                </div>
+
+                <div class="preview-area">
+                    <h2>Preview (Top-Down View)</h2>
+                    <div class="sprite-preview" id="topdown-preview">
+                        <p>Click Generate for top-down perspective</p>
+                    </div>
+                    <div class="info-box">
+                        <strong>Top-Down Features:</strong>
+                        <ul style="margin-top: 10px; padding-left: 20px;">
+                            <li>Birds-eye view perspective</li>
+                            <li>Proper shadows and depth</li>
+                            <li>Perfect for 2D top-down games</li>
+                            <li>Selection circles and health bars</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- BATCH TAB -->
+        <div id="batch-tab" class="tab-content">
+            <h2>Batch Generator</h2>
+            <div class="form-group">
+                <label>Number of Assets: <span id="batch-count-value">10</span></label>
+                <input type="range" id="batch-count" min="1" max="50" value="10">
+            </div>
+            <button id="generate-batch">Generate Batch</button>
+            <div class="gallery" id="batch-gallery"></div>
+        </div>
+
+        <!-- GALLERY TAB -->
+        <div id="gallery-tab" class="tab-content">
+            <h2>Generated Assets Gallery</h2>
+            <button id="clear-gallery" class="quick-btn">Clear Gallery</button>
+            <div class="stats">
+                <div class="stat-card">
+                    <div class="stat-value" id="stat-total">0</div>
+                    <div class="stat-label">Total Generated</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="stat-creatures">0</div>
+                    <div class="stat-label">Creatures</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="stat-items">0</div>
+                    <div class="stat-label">Items</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="stat-env">0</div>
+                    <div class="stat-label">Environment</div>
+                </div>
+            </div>
+            <div class="gallery" id="main-gallery"></div>
+        </div>
+    </div>
+
+    <script src="/js/frontend-app.js"></script>
+</body>
+</html>
