@@ -4,6 +4,8 @@
  * Compatible with Phaser, Godot, Unity 2D, Unreal Paper2D
  */
 
+const { createCanvas } = require('canvas');
+
 class SpriteSheetExporter {
   /**
    * Export multiple sprites as a sprite sheet
@@ -126,7 +128,6 @@ class SpriteSheetExporter {
       height = this.nextPowerOfTwo(height);
     }
 
-    const { createCanvas } = require('canvas');
     const canvas = createCanvas(width, height);
     const ctx = canvas.getContext('2d');
 
@@ -190,7 +191,6 @@ class SpriteSheetExporter {
       height = this.nextPowerOfTwo(height);
     }
 
-    const { createCanvas } = require('canvas');
     const canvas = createCanvas(width, height);
     const ctx = canvas.getContext('2d');
 

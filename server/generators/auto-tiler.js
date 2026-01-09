@@ -4,6 +4,8 @@
  * Handles edge blending, neighbor detection, and detail layering
  */
 
+const { createCanvas } = require('canvas');
+
 class AutoTiler {
   constructor() {
     this.tileCache = new Map();
@@ -388,7 +390,6 @@ class AutoTiler {
    * Create canvas helper
    */
   createCanvas(width, height) {
-    const { createCanvas } = require('canvas');
     return createCanvas(width, height);
   }
 

@@ -267,8 +267,22 @@ function updateUniversalInfo(params) {
 function copyUniversalParams() {
     const params = state.currentSprite?.params;
     if (params) {
-        navigator.clipboard.writeText(JSON.stringify(params, null, 2));
-        alert('Parameters copied to clipboard!');
+        navigator.clipboard.writeText(JSON.stringify(params, null, 2))
+            .then(() => {
+                // Show success message
+                const info = document.getElementById('universal-info');
+                const originalContent = info.innerHTML;
+                info.innerHTML = '<strong style="color: #4ade80;">✓ Parameters copied to clipboard!</strong>';
+                setTimeout(() => {
+                    info.innerHTML = originalContent;
+                }, 2000);
+            })
+            .catch(err => {
+                // Show error message
+                const info = document.getElementById('universal-info');
+                info.innerHTML = '<strong style="color: #ff6b6b;">✗ Failed to copy. Please try again.</strong>';
+                console.error('Copy failed:', err);
+            });
     }
 }
 
