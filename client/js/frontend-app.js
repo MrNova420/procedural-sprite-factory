@@ -37,6 +37,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initializeTabs();
     initializeControls();
     initializeGenerators();
+    initializeUniversalTab();
     loadGalleryFromStorage();
     updateStats();
 });
@@ -151,6 +152,124 @@ function initializeGenerators() {
 
     // Gallery
     document.getElementById('clear-gallery').addEventListener('click', clearGallery);
+}
+
+// Initialize Universal Tab
+function initializeUniversalTab() {
+    // Setup value displays for Universal tab
+    const univSliders = [
+        'univ-complexity', 'univ-organic', 'univ-roughness', 'univ-reflectivity',
+        'univ-translucency', 'univ-iridescence', 'univ-fluorescence',
+        'univ-aesthetic', 'univ-line', 'univ-color', 'univ-shading',
+        'univ-detail', 'univ-effects', 'univ-hue'
+    ];
+
+    univSliders.forEach(id => {
+        const input = document.getElementById(id);
+        const display = document.getElementById(`${id}-value`);
+        if (input && display) {
+            input.addEventListener('input', (e) => {
+                const val = e.target.value;
+                if (id === 'univ-hue') {
+                    display.textContent = `${val}° ${getColorName(val)}`;
+                } else {
+                    display.textContent = val;
+                }
+            });
+        }
+    });
+
+    // Universal generator button
+    document.getElementById('generate-universal').addEventListener('click', generateUniversal);
+    document.getElementById('download-universal').addEventListener('click', () => downloadSprite(state.currentSprite));
+    document.getElementById('add-to-gallery-universal').addEventListener('click', () => addToGallery(state.currentSprite, 'creatures'));
+    document.getElementById('copy-params-universal').addEventListener('click', copyUniversalParams);
+}
+
+// Generate Universal
+async function generateUniversal() {
+    const params = {
+        universal: true,
+        form: {
+            topology: document.getElementById('univ-topology').value,
+            symmetry: {
+                type: document.getElementById('univ-symmetry').value,
+                count: document.getElementById('univ-symmetry').value === 'radial' ? 8 : 2
+            },
+            complexity: parseFloat(document.getElementById('univ-complexity').value),
+            organic: parseFloat(document.getElementById('univ-organic').value)
+        },
+        material: {
+            physical: {
+                roughness: parseFloat(document.getElementById('univ-roughness').value),
+                reflectivity: parseFloat(document.getElementById('univ-reflectivity').value),
+                translucency: parseFloat(document.getElementById('univ-translucency').value)
+            },
+            optical: {
+                iridescence: parseFloat(document.getElementById('univ-iridescence').value),
+                fluorescence: parseFloat(document.getElementById('univ-fluorescence').value)
+            }
+        },
+        styleCoordinates: {
+            aesthetic: parseFloat(document.getElementById('univ-aesthetic').value),
+            line: parseFloat(document.getElementById('univ-line').value),
+            color: parseFloat(document.getElementById('univ-color').value),
+            shading: parseFloat(document.getElementById('univ-shading').value),
+            detail: parseFloat(document.getElementById('univ-detail').value),
+            effects: parseFloat(document.getElementById('univ-effects').value)
+        },
+        colorParams: {
+            baseHue: parseInt(document.getElementById('univ-hue').value),
+            harmonyType: document.getElementById('univ-harmony').value
+        },
+        seed: parseInt(document.getElementById('univ-seed').value)
+    };
+
+    try {
+        showLoading('universal-preview');
+        const response = await fetch('/api/generate', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(params)
+        });
+
+        const data = await response.json();
+        if (data.success) {
+            displaySprite(data.image, 'universal-preview');
+            state.currentSprite = { image: data.image, params, type: 'universal' };
+            updateUniversalInfo(params);
+        } else {
+            showError('universal-preview', data.error || 'Generation failed');
+        }
+    } catch (error) {
+        showError('universal-preview', error.message);
+    }
+}
+
+function updateUniversalInfo(params) {
+    const info = document.getElementById('universal-info');
+    let html = '<strong>✨ Universal Parameters:</strong><br>';
+    html += `<strong>Form:</strong> ${params.form.topology} (${params.form.symmetry.type})<br>`;
+    html += `<strong>Complexity:</strong> ${(params.form.complexity * 100).toFixed(0)}%<br>`;
+    html += `<strong>Organic:</strong> ${(params.form.organic * 100).toFixed(0)}%<br>`;
+    html += `<strong>Material:</strong> Reflectivity ${(params.material.physical.reflectivity * 100).toFixed(0)}%<br>`;
+    if (params.material.optical.iridescence > 0) {
+        html += `<strong>Iridescence:</strong> ${(params.material.optical.iridescence * 100).toFixed(0)}%<br>`;
+    }
+    if (params.material.optical.fluorescence > 0) {
+        html += `<strong>Glow:</strong> ${(params.material.optical.fluorescence * 100).toFixed(0)}%<br>`;
+    }
+    html += `<strong>Style:</strong> ${(params.styleCoordinates.aesthetic * 100).toFixed(0)}% aesthetic<br>`;
+    html += `<strong>Seed:</strong> ${params.seed}`;
+    info.innerHTML = html;
+}
+
+function copyUniversalParams() {
+    const params = state.currentSprite?.params;
+    if (params) {
+        navigator.clipboard.writeText(JSON.stringify(params, null, 2));
+        alert('Parameters copied to clipboard!');
+    }
 }
 
 // Generate Creature
