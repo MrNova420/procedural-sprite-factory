@@ -48,7 +48,7 @@ router.get('/presets/:name', (req, res) => {
     
     res.json({
       success: true,
-      preset,
+      ...preset,  // Flatten preset properties
       qualityScore,
       performance
     });
